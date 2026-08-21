@@ -332,6 +332,7 @@ export default function App() {
                 t: 'Pro (later)',
                 d: 'White-label / power features for MSPs and teams.',
                 bullets: ['Domain-bound license pattern · ethical keys later', 'Not sold before managed unit economics are clear'],
+                cta: { label: 'Pro outline', href: 'https://github.com/fifthsegment/noatun#pro-later' },
                 muted: true,
               },
             ].map((p) => (
@@ -343,7 +344,7 @@ export default function App() {
                 {p.bullets ? (
                   <ul className={`mt-3 space-y-1 text-[12px] leading-relaxed ${p.highlight ? 'text-zinc-800' : 'text-zinc-600'}`}>{p.bullets.map((b) => <li key={b}>· {b}</li>)}</ul>
                 ) : null}
-                <a href={p.cta!.href} className={`mt-4 inline-flex h-9 items-center rounded-full px-4 text-[13px] font-semibold ${p.highlight ? 'bg-zinc-900 text-white hover:bg-black' : 'bg-zinc-900 text-white hover:bg-black'}`}>{p.cta!.label} →</a>
+                {p.cta && <a href={p.cta.href} className={`mt-4 inline-flex h-9 items-center rounded-full px-4 text-[13px] font-semibold ${p.highlight ? 'bg-zinc-900 text-white hover:bg-black' : 'bg-zinc-900 text-white hover:bg-black'}`}>{p.cta.label} →</a>}
               </div>
             ))}
           </div>
