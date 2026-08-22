@@ -8,16 +8,16 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <div className="overflow-hidden rounded-[18px] bg-white ring-1 ring-zinc-200">
+    <div className="faq-list overflow-hidden rounded-[18px]">
       {faqs.map((faq, index) => (
-        <details key={faq.q} className={`group ${index < faqs.length - 1 ? 'border-b border-zinc-200' : ''}`}>
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4.5 text-left">
-            <span className="text-[14px] font-medium tracking-[-0.01em] text-zinc-900">{faq.q}</span>
-            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-zinc-100 text-zinc-500 transition group-open:rotate-180">
+        <details key={faq.q} className={`faq-item group ${index < faqs.length - 1 ? 'border-b' : ''}`}>
+          <summary className="faq-summary flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4.5 text-left">
+            <span className="faq-question text-[14px] font-medium tracking-[-0.01em]">{faq.q}</span>
+            <span className="faq-chevron grid h-7 w-7 shrink-0 place-items-center rounded-full transition group-open:rotate-180">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden><path d="M2 4.5 6 8.5l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </span>
           </summary>
-          <p className="px-5 pb-5 text-[13px] leading-relaxed text-zinc-600">{faq.a}</p>
+          <p className="faq-answer px-5 pb-5 text-[13px] leading-relaxed">{faq.a}</p>
         </details>
       ))}
     </div>
