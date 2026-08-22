@@ -23,8 +23,8 @@ function asset(name: string) {
   return `/noatun-site/screenshots/${name}`
 }
 
-function BrandMark() {
-  return <span className="brand-mark" aria-hidden><img src="/noatun-site/noatun-icon.png" alt="" /></span>
+function BrandMark({ theme }: { theme: Theme }) {
+  return <span className="brand-mark" aria-hidden><img src={theme === 'light' ? '/noatun-site/noatun-icon-light.png' : '/noatun-site/noatun-icon.png'} alt="" /></span>
 }
 
 function ScreenshotCard({ item, index }: { item: typeof screenshots[number]; index: number }) {
@@ -41,7 +41,11 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>(() => { const requested = new URLSearchParams(window.location.search).get('theme'); return requested === 'light' || requested === 'dark' ? requested : ((localStorage.getItem('noatun-theme') as Theme) || 'dark') })
   const referralLink = useMemo(() => success?.referralUrl ?? '', [success])
 
-  useEffect(() => { document.documentElement.dataset.theme = theme; localStorage.setItem('noatun-theme', theme) }, [theme])
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    localStorage.setItem('noatun-theme', theme)
+    document.querySelector<HTMLLinkElement>('link[rel="icon"]')?.setAttribute('href', `/noatun-site/noatun-icon${theme === 'light' ? '-light' : ''}.png`)
+  }, [theme])
   useEffect(() => {
     const hash = window.location.hash
     if (hash.startsWith('#joined=')) {
@@ -65,7 +69,7 @@ export default function App() {
   return <div className="site-shell">
     <header className="site-header">
       <div className="site-container header-inner">
-        <a className="brand" href="#top" aria-label="Noatun home"><BrandMark /><span>Noatun</span></a>
+        <a className="brand" href="#top" aria-label="Noatun home"><BrandMark theme={theme} /><span>Noatun</span></a>
         <nav className="desktop-nav" aria-label="Main navigation"><a href="#product">Product</a><a href="#teams">For teams</a><a href="#faq">FAQ</a></nav>
         <div className="header-actions">
           <button className="theme-toggle" type="button" onClick={() => setTheme(value => value === 'dark' ? 'light' : 'dark')} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}><span aria-hidden>{theme === 'dark' ? '☼' : '◐'}</span><span className="theme-toggle-label">{theme === 'dark' ? 'Light' : 'Dark'}</span></button>
