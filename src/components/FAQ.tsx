@@ -1,8 +1,11 @@
 const faqs = [
-  { q: 'Why not just use Google Drive?', a: 'Because convenience and control should not be mutually exclusive. Noatun gives you a focused place for files, photos, documents, and sharing — while the infrastructure stays yours.' },
-  { q: 'Why not Nextcloud?', a: 'Nextcloud is broad and powerful. Noatun is deliberately more focused: a lighter daily cloud for people who want less plugin sprawl, less maintenance anxiety, and a cleaner product experience.' },
-  { q: 'Can we run it ourselves?', a: 'Yes. Self-hosting is the foundation: run Noatun in your home lab, on a VPS, or inside the environment your team already trusts. A managed path is planned for teams that want the product without operating the server.' },
-  { q: 'Is it useful for a small team?', a: 'That is where the product is headed: shared files and documents for the team, plus the operational basics an owner or IT lead needs — users, quotas, roles, backups, and logs.' },
+  { q: 'What is Noatun?', a: 'Noatun is a private cloud for files, photos, documents, search, and sharing. It is designed for self-hosters first, with practical administration for small teams.' },
+  { q: 'Can I run it myself?', a: 'Yes. Self-hosting is the foundation: run Noatun in a home lab, on a VPS, or inside infrastructure your team already trusts. Docker Compose is the simplest path, with a Helm deployment path for Kubernetes operators.' },
+  { q: 'Is Noatun a Dropbox-style sync client?', a: 'Not yet. Today, Noatun is a browser-first private cloud with an installable PWA and Android share-to-Noatun support. Native desktop sync, WebDAV, and background camera backup are not shipped.' },
+  { q: 'How does it handle photos and search?', a: 'Noatun supports photo libraries, video, albums, sharing, OCR, and optional local image tagging. Search can cover names, extracted text, visual tags, and email. Larger photo and AI workloads need more memory.' },
+  { q: 'Is it useful for a small team?', a: 'Yes, for teams that need a focused private workspace rather than a full enterprise suite. It includes optional OIDC SSO through Dex, user activation, quotas, external links, monitoring, logs, and operator-managed backups.' },
+  { q: 'How much server capacity do I need?', a: 'The benchmark baseline is about 0.4 GiB at idle and under 0.8 GiB with a light Drive and Photos library. 1 GB is the minimum; 2 GB is recommended for a real photo library.' },
+  { q: 'Is Noatun end-to-end encrypted or compliance-certified?', a: 'No. Noatun keeps your data on infrastructure you control, but it is not an end-to-end encrypted vault or a compliance program. You remain responsible for TLS, access policies, backups, and the environment it runs in.' },
   { q: 'What do I get by joining the waitlist?', a: 'Launch updates, early access, and founding pricing. You also help shape the product by telling us what is frustrating about your current setup.' },
 ]
 
