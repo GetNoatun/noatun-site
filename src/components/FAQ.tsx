@@ -1,12 +1,12 @@
 const faqs = [
-  { q: 'What is Noatun?', a: 'Noatun is a private cloud for files, photos, documents, search, and sharing. It is designed for self-hosters first, with practical administration for small teams.' },
-  { q: 'Can I run it myself?', a: 'Yes. Self-hosting is the foundation: run Noatun in a home lab, on a VPS, or inside infrastructure your team already trusts. Docker Compose is the simplest path, with a Helm deployment path for Kubernetes operators.' },
-  { q: 'Is Noatun a Dropbox-style sync client?', a: 'Not yet. Today, Noatun is a browser-first private cloud with an installable PWA and Android share-to-Noatun support. Native desktop sync, WebDAV, and background camera backup are not shipped.' },
-  { q: 'How does it handle photos and search?', a: 'Noatun supports photo libraries, video, albums, sharing, OCR, and optional local image tagging. Search can cover names, extracted text, visual tags, and email. Larger photo and AI workloads need more memory.' },
-  { q: 'Is it useful for a small team?', a: 'Yes, for teams that need a focused private workspace rather than a full enterprise suite. It includes optional OIDC SSO through Dex, user activation, quotas, external links, monitoring, logs, and operator-managed backups.' },
+  { q: 'What is Noatun?', a: 'Noatun is a self-hosted private cloud for files, photos, documents, search, and sharing. It is built for personal use first, with administration and access controls for small teams.' },
+  { q: 'Can I download it today?', a: 'Noatun is currently accepting early-access signups. The screens on this site show working product software, but general availability and public downloads have not launched yet.' },
+  { q: 'Can I run it myself?', a: 'Yes. Self-hosting is the foundation. Docker Compose is the simplest deployment path for a home server or VPS, with Helm charts available for Kubernetes operators.' },
+  { q: 'Does it work like Dropbox sync or automatic phone backup?', a: 'Not yet. Noatun is currently browser-first, with an installable PWA and Android share-to-Noatun support. Native desktop sync, WebDAV, background camera backup, and full offline sync are not included today.' },
+  { q: 'How does it handle photos and search?', a: 'Noatun supports photo libraries, video, albums, sharing, OCR, and optional local image tagging. Search can cover file names, extracted text, local image tags, and synced email. Larger photo and image-recognition workloads need more memory.' },
+  { q: 'Is it useful for a small team?', a: 'Yes, for teams that need a focused private file workspace rather than a full collaboration suite. Noatun can connect an OIDC identity provider and includes user activation, quotas, external links, monitoring, logs, and operator-managed backups.' },
   { q: 'How much server capacity do I need?', a: 'The benchmark baseline is about 0.4 GiB at idle and under 0.8 GiB with a light Drive and Photos library. 1 GB is the minimum; 2 GB is recommended for a real photo library.' },
-  { q: 'Is Noatun end-to-end encrypted or compliance-certified?', a: 'No. Noatun keeps your data on infrastructure you control, but it is not an end-to-end encrypted vault or a compliance program. You remain responsible for TLS, access policies, backups, and the environment it runs in.' },
-  { q: 'What do I get by joining the waitlist?', a: 'Launch updates, early access, and founding pricing. You also help shape the product by telling us what is frustrating about your current setup.' },
+  { q: 'Is Noatun end-to-end encrypted or compliance-certified?', a: 'No. Noatun keeps data on infrastructure you control, but it is not an end-to-end encrypted vault or a compliance program. You remain responsible for TLS, access policies, backups, updates, and the environment it runs in.' },
 ]
 
 export default function FAQ() {

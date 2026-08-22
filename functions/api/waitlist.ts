@@ -28,9 +28,13 @@ export async function onRequestPost(context: any) {
   if (!EMAIL_RE.test(rawEmail)) return json({ error: 'Enter a valid email' }, 400)
 
   const email = rawEmail
-  const current = body.current ? String(body.current).slice(0, 40) : null
-  const interest = body.interest ? String(body.interest).slice(0, 20) : null
+  const current = body.current ? String(body.current).slice(0, 60) : null
+  const interest = body.interest ? String(body.interest).slice(0, 24) : null
   const source = body.source ? String(body.source).slice(0, 32) : null
+  const audience = body.audience ? String(body.audience).slice(0, 20) : 'personal'
+  const organization = body.organization ? String(body.organization).trim().slice(0, 120) : null
+  const teamSize = body.teamSize ? String(body.teamSize).slice(0, 20) : null
+  const message = body.message ? String(body.message).trim().slice(0, 500) : null
   const ip = request.headers.get('cf-connecting-ip') ?? request.headers.get('x-forwarded-for') ?? '0.0.0.0'
   const ua = request.headers.get('user-agent')?.slice(0, 200) ?? null
 
@@ -77,7 +81,7 @@ export async function onRequestPost(context: any) {
   }
 
   const now = new Date().toISOString()
-  const record = { email, code, current, interest, source, ip, ua, createdAt: now, referralCount: 0 }
+  const record = { email, code, audience, organization, teamSize, current, interest, message, source, ip, ua, createdAt: now, referralCount: 0 }
   await kv.put(`email:${email}`, JSON.stringify(record))
   await kv.put(`code:${code}`, email)
   await kv.put(`entry:${code}`, JSON.stringify(record))
