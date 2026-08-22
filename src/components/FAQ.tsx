@@ -1,9 +1,9 @@
 const faqs=[
-  { q:'Synkroniserer det som Nextcloud / Dropbox?', a:'Ikke ennå. I dag: nettleser + PWA + deling til Noatun på Android. WebDAV er neste — da åpnes rclone, Finder, Utforsker og Cyberduck. Vi innrømmer at Nextcloud har klientene, til WebDAV er på plass.' },
-  { q:'Hvordan flytter jeg over?', a:'Ingen ett-klikks import ennå. Eksporter via Google Takeout eller Nextcloud, last opp til Noatun. Vi validerer stien før lansering så det føles trygt. Se migration-sketch.' },
-  { q:'Får det plass på en $5 / 1 GB VPS?', a:'Målt uten SSO: ~0,4 GiB i ro, under 0,8 GiB med lett bibliotek (aug 2026). Trygg historie: 1 GB minimum, 2 GB anbefalt for ekte fotobibliotek + AI-merking. Full benchmark lenket.' },
-  { q:'Bedre enn Immich for bilder?', a:'Immich vinner ren bilde-backup — vi innrømmer det. Noatun vinner når du også trenger Drive + lette dokumenter i én innlogging, én backup, én compose-fil. Bare bilder? Bruk Immich.' },
-  { q:'Hva koster det?', a:'Selv-host forblir AGPL-3.0 og gratis. Driftet Noatun sikter mot $8–20/mnd familie (forankret mot €3–15 driftet Nextcloud). Tidlig venteliste låser grunnpris.' },
+  { q:'Does it sync like Nextcloud / Dropbox?', a:'Not yet. Today: browser Drive + installable PWA + Android share-target upload. WebDAV is next — then rclone, Finder, Explorer, Cyberduck mounts. We concede native clients to Nextcloud until WebDAV ships.' },
+  { q:'How does migrating work?', a:'No one-click importer yet. Export from Google Takeout (files + photos) or Nextcloud, then upload into Noatun — see the migration sketch. We validate the path before launch so switching feels safe.' },
+  { q:'Will it really fit a $5 / 1 GB VPS?', a:'Measured without SSO: ~0.4 GiB idle, under ~0.8 GiB with a light Drive+Photos library (Aug 2026). Safe story: 1 GB minimum, 2 GB recommended for real photo libraries + AI tagging. Full benchmark linked.' },
+  { q:'Is it better than Immich for photos?', a:'Immich wins pure photo backup — we concede that. Noatun wins when you also need Drive + light docs/notes in one login, one backup, one compose file. If you only need photos, use Immich.' },
+  { q:'What does it cost?', a:'Self-host stays AGPL-3.0 and free. Managed Noatun targets $8–20/mo family (anchored to €3–15 managed Nextcloud). Early waitlist locks a founding price.' },
 ]
 export default function FAQ(){
   return (
