@@ -1,6 +1,6 @@
 const faqs = [
   { q: 'What is Noatun?', a: 'Noatun is a self-hosted private cloud for files, photos, documents, search, and sharing. It is built for personal use first, with administration and access controls for small teams.' },
-  { q: 'Can I download it today?', a: 'Noatun is currently accepting early-access signups. The screens on this site show working product software, but general availability and public downloads have not launched yet.' },
+  { q: 'Can I download it today?', a: 'Noatun is currently in private early access. General availability and public downloads have not launched yet.' },
   { q: 'Can I run it myself?', a: 'Yes. Self-hosting is the foundation. Docker Compose is the simplest deployment path for a home server or VPS, with Helm charts available for Kubernetes operators.' },
   { q: 'Does it work like Dropbox sync or automatic phone backup?', a: 'Not yet. Noatun is currently browser-first, with an installable PWA and Android share-to-Noatun support. Native desktop sync, WebDAV, background camera backup, and full offline sync are not included today.' },
   { q: 'How does it handle photos and search?', a: 'Noatun supports photo libraries, video, albums, sharing, OCR, and optional local image tagging. Search can cover file names, extracted text, local image tags, and synced email. Larger photo and image-recognition workloads need more memory.' },

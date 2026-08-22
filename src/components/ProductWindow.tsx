@@ -5,7 +5,7 @@ export default function ProductWindow({ label, children, className = '' }: { lab
     <div className="product-window-bar" aria-hidden="true">
       <span className="window-dots"><i /><i /><i /></span>
       <span className="window-title">NOATUN / {label}</span>
-      <span className="window-status">LIVE PRODUCT</span>
+      <span className="window-status">SELF-HOSTED</span>
     </div>
     {children}
   </div>
