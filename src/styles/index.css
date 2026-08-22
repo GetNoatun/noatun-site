@@ -1,80 +1,76 @@
 @import "tailwindcss";
 
 @theme {
-  --color-abyss: #07080A;
-  --color-harbor: #0B0D10;
-  --color-panel: #121416;
-  --color-panel-hover: #171A1E;
-  --color-elevated: #1A1E22;
-  --color-canvas: #07080A;
-  --color-surface: #121416;
-  --color-border: rgba(242,240,235,0.07);
-  --color-border-strong: rgba(242,240,235,0.14);
-  --color-foam: #F2F0EB;
-  --color-ink: #F2F0EB;
-  --color-ink-muted: #A8A6A1;
-  --color-ink-faint: #7A7874;
-  --color-lantern: #F59E0B;
-  --color-lantern-soft: rgba(245,158,11,0.10);
-  --color-lantern-ring: rgba(245,158,11,0.22);
-  --color-lantern-glow: rgba(245,158,11,0.18);
-  --color-success: #10B981;
-  --font-display: "Fraunces", Georgia, serif;
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --radius-panel: 18px;
-  --radius-card: 16px;
+  --color-fjord: #0E1A1E;
+  --color-fjord-deep: #0A1418;
+  --color-pine: #1C2820;
+  --color-slate: #243036;
+  --color-mist: #E6E8E3;
+  --color-paper: #F4F1EA;
+  --color-ink-900: #0F1A1E;
+  --color-ink-600: #55606A;
+  --color-ink-400: #8A959E;
+  --color-harbour: #C45A2A;
+  --color-harbour-soft: rgba(196,90,42,0.12);
+  --color-harbour-ring: rgba(196,90,42,0.28);
+  --color-north: #6BA3A8;
+  --color-success: #2D6A4F;
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --radius-panel: 20px;
 }
 
-* { scrollbar-width: thin; scrollbar-color: #2A2E32 #07080A; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--color-abyss);
-  color: var(--color-ink);
+*{ scrollbar-width: thin; scrollbar-color: #243036 #0E1A1E; }
+html{ scroll-behavior: smooth; }
+body{
+  background: var(--color-fjord);
+  color: var(--color-mist);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* — Magical lantern harbor: mist + waterline + amber leak — */
-.harbor {
-  position: relative;
-  isolation: isolate;
-  overflow: clip;
+/* — Nordic fjord: deep water + pine fog + harbour lantern — */
+.fjord{
+  position: relative; isolation: isolate; overflow: clip;
   background:
-    radial-gradient(1200px 700px at 18% -8%, rgba(245,158,11,0.11), transparent 62%),
-    radial-gradient(900px 520px at 82% 6%, rgba(110,140,160,0.07), transparent 58%),
-    linear-gradient(180deg, #0B0D10 0%, #07080A 100%);
+    radial-gradient(1100px 620px at 12% -10%, rgba(107,163,168,0.16), transparent 62%),
+    radial-gradient(900px 560px at 88% 8%, rgba(196,90,42,0.13), transparent 60%),
+    linear-gradient(180deg, #0E1A1E 0%, #0A1418 100%);
 }
-.harbor::after{
-  content:"";
-  position:absolute; inset:auto 0 0 0; height:1px;
-  background: linear-gradient(90deg, transparent, rgba(245,158,11,0.18), transparent);
+.fjord::after{
+  content:""; position:absolute; inset:auto 0 0 0; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(196,90,42,0.22), transparent);
   pointer-events:none;
 }
-.lantern-glow{
-  position:absolute; width:620px; height:620px; border-radius:50%;
-  background: radial-gradient(circle at 50% 50%, rgba(245,158,11,0.18), rgba(245,158,11,0.06) 38%, transparent 68%);
-  filter: blur(18px);
-  pointer-events:none;
-  animation: drift 18s ease-in-out infinite alternate;
+.aurora{
+  position:absolute; inset: -20% -10% auto -10%; height: 420px;
+  background: radial-gradient(800px 320px at 50% 0%, rgba(107,163,168,0.14), transparent 65%),
+              radial-gradient(600px 260px at 72% 10%, rgba(196,90,42,0.08), transparent 60%);
+  filter: blur(2px); opacity: 0.9; pointer-events:none;
 }
-@keyframes drift{ from{ transform: translate3d(-6px, -4px, 0)} to{ transform: translate3d(8px, 6px, 0)} }
-@media (prefers-reduced-motion: reduce){ .lantern-glow{ animation:none } }
-
-.noise::before{
-  content:""; position:absolute; inset:0; opacity:0.035; pointer-events:none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+.rune-grid{
+  position:absolute; inset:0; opacity:0.06; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(230,232,227,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(230,232,227,0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask: radial-gradient(900px 520px at 50% 0%, black 42%, transparent 72%);
 }
-
-::selection{ background: rgba(245,158,11,0.22); }
-:focus-visible{ outline:2px solid var(--color-lantern-ring); outline-offset:2px; }
-
-/* Scroll reveal */
-.reveal{ opacity:0; transform: translateY(14px); transition: opacity 560ms ease, transform 560ms ease; }
+/* Wood grain hatching (SVG noise) */
+.grain::before{
+  content:""; position:absolute; inset:0; opacity:0.06; pointer-events:none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+::selection{ background: rgba(196,90,42,0.22); }
+:focus-visible{ outline:2px solid var(--color-harbour-ring); outline-offset:2px; }
+.reveal{ opacity:0; transform: translateY(10px); transition: opacity 520ms ease, transform 520ms ease; }
 .reveal.in{ opacity:1; transform:none; }
 @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none } }
+.bento{ transition: transform 160ms ease, border-color 160ms ease; }
+.bento:hover{ transform: translateY(-2px); border-color: rgba(230,232,227,0.12); }
 
-/* Bento card hover */
-.bento-card{ transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease; }
-.bento-card:hover{ transform: translateY(-2px); border-color: rgba(242,240,235,0.14); }
+/* Display type: tight, high contrast, not 72px tech-hero */
+.display{ font-family: var(--font-display); font-weight: 400; letter-spacing: -0.03em; }
