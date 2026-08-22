@@ -26,11 +26,11 @@ function asset(name: string) {
 function useTheme(): [Theme, Dispatch<SetStateAction<Theme>>] {
   const [theme, setTheme] = useState<Theme>(() => {
     const requested = new URLSearchParams(window.location.search).get('theme')
-    return requested === 'dark' || requested === 'light' ? requested : ((localStorage.getItem('noatun-theme') as Theme) || 'light')
+    return requested === 'dark' || requested === 'light' ? requested : ((localStorage.getItem('noatun-theme-v2') as Theme) || 'light')
   })
   useEffect(() => {
     document.documentElement.dataset.theme = theme
-    localStorage.setItem('noatun-theme', theme)
+    localStorage.setItem('noatun-theme-v2', theme)
     document.querySelector<HTMLLinkElement>('link[rel="icon"]')?.setAttribute('href', `/noatun-site/noatun-icon${theme === 'light' ? '-light' : ''}.png`)
   }, [theme])
   return [theme, setTheme]
