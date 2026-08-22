@@ -1,67 +1,80 @@
 @import "tailwindcss";
 
 @theme {
-  --color-canvas: #09090b;
-  --color-surface: #18181b;
-  --color-elevated: #27272a;
-  --color-overlay: #1c1c1f;
-  --color-border: #27272a;
-  --color-border-subtle: rgba(39,39,42,0.6);
-  --color-border-strong: #3f3f46;
-  --color-ink: #fafafa;
-  --color-ink-muted: #a1a1aa;
-  --color-ink-faint: #71717a;
-  --color-ink-ghost: #52525b;
-  --color-amber: #f59e0b;
-  --color-amber-strong: #f59e0b;
-  --color-amber-soft: rgba(245,158,11,0.10);
-  --color-amber-ring: rgba(245,158,11,0.20);
-  --color-amber-glow: rgba(245,158,11,0.14);
+  --color-abyss: #07080A;
+  --color-harbor: #0B0D10;
+  --color-panel: #121416;
+  --color-panel-hover: #171A1E;
+  --color-elevated: #1A1E22;
+  --color-canvas: #07080A;
+  --color-surface: #121416;
+  --color-border: rgba(242,240,235,0.07);
+  --color-border-strong: rgba(242,240,235,0.14);
+  --color-foam: #F2F0EB;
+  --color-ink: #F2F0EB;
+  --color-ink-muted: #A8A6A1;
+  --color-ink-faint: #7A7874;
+  --color-lantern: #F59E0B;
+  --color-lantern-soft: rgba(245,158,11,0.10);
+  --color-lantern-ring: rgba(245,158,11,0.22);
+  --color-lantern-glow: rgba(245,158,11,0.18);
+  --color-success: #10B981;
+  --font-display: "Fraunces", Georgia, serif;
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   --font-mono: JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --radius-panel: 18px;
   --radius-card: 16px;
-  --radius-pill: 9999px;
 }
 
-* { scrollbar-width: thin; scrollbar-color: #3f3f46 #09090b; }
+* { scrollbar-width: thin; scrollbar-color: #2A2E32 #07080A; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--color-canvas);
+  background: var(--color-abyss);
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* Harbor grid + vignette — subtle, felt not seen */
+/* — Magical lantern harbor: mist + waterline + amber leak — */
 .harbor {
   position: relative;
   isolation: isolate;
   overflow: clip;
-}
-.harbor::before {
-  content: "";
-  position: absolute;
-  inset: 0;
   background:
-    linear-gradient(to bottom, transparent 0%, rgba(9,9,11,0) 55%, rgba(9,9,11,0.85) 100%),
-    radial-gradient(900px 520px at 50% -6%, rgba(245,158,11,0.10), transparent 60%),
-    radial-gradient(1100px 620px at 85% 0%, rgba(161,161,170,0.06), transparent 55%);
-  pointer-events: none;
-  z-index: -1;
+    radial-gradient(1200px 700px at 18% -8%, rgba(245,158,11,0.11), transparent 62%),
+    radial-gradient(900px 520px at 82% 6%, rgba(110,140,160,0.07), transparent 58%),
+    linear-gradient(180deg, #0B0D10 0%, #07080A 100%);
 }
-.harbor-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask: radial-gradient(900px 520px at 50% 0%, black 45%, transparent 75%);
-  opacity: 0.35;
-  pointer-events: none;
+.harbor::after{
+  content:"";
+  position:absolute; inset:auto 0 0 0; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(245,158,11,0.18), transparent);
+  pointer-events:none;
+}
+.lantern-glow{
+  position:absolute; width:620px; height:620px; border-radius:50%;
+  background: radial-gradient(circle at 50% 50%, rgba(245,158,11,0.18), rgba(245,158,11,0.06) 38%, transparent 68%);
+  filter: blur(18px);
+  pointer-events:none;
+  animation: drift 18s ease-in-out infinite alternate;
+}
+@keyframes drift{ from{ transform: translate3d(-6px, -4px, 0)} to{ transform: translate3d(8px, 6px, 0)} }
+@media (prefers-reduced-motion: reduce){ .lantern-glow{ animation:none } }
+
+.noise::before{
+  content:""; position:absolute; inset:0; opacity:0.035; pointer-events:none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
 }
 
-::selection { background: rgba(245,158,11,0.22); }
-:focus-visible { outline: 2px solid rgba(245,158,11,0.45); outline-offset: 2px; }
+::selection{ background: rgba(245,158,11,0.22); }
+:focus-visible{ outline:2px solid var(--color-lantern-ring); outline-offset:2px; }
+
+/* Scroll reveal */
+.reveal{ opacity:0; transform: translateY(14px); transition: opacity 560ms ease, transform 560ms ease; }
+.reveal.in{ opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none } }
+
+/* Bento card hover */
+.bento-card{ transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease; }
+.bento-card:hover{ transform: translateY(-2px); border-color: rgba(242,240,235,0.14); }
