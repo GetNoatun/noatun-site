@@ -113,8 +113,8 @@ h1 span, h2 em { color: var(--accent); font-family: var(--font-serif); font-styl
 .window-dots i:first-child { background: var(--accent); }
 .window-title { color: var(--text-muted); text-align: center; }
 .window-status { text-align: right; }
-.hero-shot { aspect-ratio: 1.12 / 1; overflow: hidden; border: 0; border-radius: 0; background: #111; box-shadow: none; }
-.hero-shot img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center top; }
+.hero-shot { aspect-ratio: 8 / 5; overflow: hidden; border: 0; border-radius: 0; background: var(--surface-raised); box-shadow: none; }
+.hero-shot img { width: 100%; height: 100%; display: block; object-fit: contain; object-position: center; }
 .image-caption { margin-top: 11px; color: var(--text-faint); font-family: var(--font-mono); font-size: 10px; letter-spacing: .07em; text-align: right; }
 
 .waitlist-section { position: relative; z-index: 3; margin-top: -1px; padding-bottom: 12px; }
@@ -151,9 +151,8 @@ h1 span, h2 em { color: var(--accent); font-family: var(--font-serif); font-styl
 .screenshot-card:nth-child(2) { grid-column: span 5; }
 .screenshot-card:nth-child(3) { grid-column: span 5; }
 .screenshot-card:nth-child(4) { grid-column: span 7; }
-.screenshot-frame { aspect-ratio: 1.15 / 1; overflow: hidden; border: 0; border-radius: 0; background: #111; box-shadow: none; }
-.screenshot-frame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 500ms ease; }
-.screenshot-card:hover .screenshot-frame img, .enterprise-proof-card:hover .screenshot-frame img { transform: scale(1.025); }
+.screenshot-frame { aspect-ratio: 8 / 5; overflow: hidden; border: 0; border-radius: 0; background: var(--surface-raised); box-shadow: none; }
+.screenshot-frame img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; }
 .screenshot-copy { padding-top: 17px; }
 .screenshot-copy h3 { margin-top: 7px; font-size: 29px; line-height: .95; letter-spacing: -.04em; }
 .screenshot-copy p { margin-top: 8px; color: var(--text-muted); font-size: 13px; line-height: 1.5; }
@@ -189,7 +188,7 @@ h1 span, h2 em { color: var(--accent); font-family: var(--font-serif); font-styl
 .enterprise-proof-section { padding: clamp(100px, 12vw, 170px) 0; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); background: var(--surface-soft); }
 .enterprise-proof-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 70px; }
 .enterprise-proof-card { min-width: 0; }
-.enterprise-proof-card .screenshot-frame { aspect-ratio: 1.05 / 1; }
+.enterprise-proof-card .screenshot-frame { aspect-ratio: 8 / 5; }
 .deployment-section { padding: clamp(100px, 12vw, 170px) 0; background: var(--page-deep); }
 .deployment-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(50px, 10vw, 150px); align-items: start; }
 .deployment-copy h2 { margin-top: 17px; font-size: clamp(52px, 6vw, 84px); line-height: .86; letter-spacing: -.06em; }
@@ -303,7 +302,7 @@ form input, form select, form textarea { color: #182023; }
   .hero-lede { font-size: 15px; }
   .hero-buttons .button { min-height: 45px; padding: 0 16px; }
   .hero-meta { gap: 10px 16px; font-size: 9px; }
-  .hero-shot { aspect-ratio: .92 / 1; border-radius: 0; }
+  .hero-shot { aspect-ratio: 8 / 5; border-radius: 0; }
   .product-window { border-radius: 15px; }
   .product-window-bar { min-height: 34px; padding: 0 10px; }
   .window-status { display: none; }
@@ -326,10 +325,10 @@ form input, form select, form textarea { color: #182023; }
   .principle-card h3 { margin-top: 45px; }
   .screens-grid { display: block; margin-top: 50px; }
   .screenshot-card, .screenshot-card-wide { margin-bottom: 42px; }
-  .screenshot-frame { aspect-ratio: 1 / .86; }
+  .screenshot-frame { aspect-ratio: 8 / 5; }
   .screenshot-copy h3 { font-size: 27px; }
   .enterprise-grid, .enterprise-hero-grid { gap: 50px; }
-  .admin-proof img { aspect-ratio: 1.1 / 1; object-fit: cover; object-position: top left; }
+  .admin-proof img { aspect-ratio: auto; object-fit: contain; object-position: center; }
   .enterprise-proof-items, .capability-grid, .enterprise-proof-grid { grid-template-columns: 1fr; }
   .enterprise-proof-card:last-child { grid-column: auto; max-width: none; }
   .enterprise-proof-items span { padding: 16px; }
