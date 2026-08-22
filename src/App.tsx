@@ -24,7 +24,7 @@ function asset(name: string) {
 }
 
 function BrandMark() {
-  return <span className="brand-mark" aria-hidden><svg width="17" height="17" viewBox="0 0 18 18" fill="none"><path d="M3 8.2 9 3l6 5.2v6.1c0 .9-.7 1.7-1.7 1.7H4.7c-.9 0-1.7-.8-1.7-1.7V8.2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M6.1 16v-5.1h5.8V16M9 7.1v.05" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+  return <span className="brand-mark" aria-hidden><img src="/noatun-site/noatun-icon.png" alt="" /></span>
 }
 
 function ScreenshotCard({ item, index }: { item: typeof screenshots[number]; index: number }) {
