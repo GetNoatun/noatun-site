@@ -1,5 +1,5 @@
 const faqs=[
-  { q:'Does it sync like Nextcloud / Dropbox?', a:'Not yet. Today: browser Drive + installable PWA + Android share-target upload. WebDAV is next — then rclone, Finder, Explorer, Cyberduck mounts. We concede native clients to Nextcloud until WebDAV ships.' },
+  { q:'Does it sync like Nextcloud / Dropbox?', a:'Not yet. Today: browser Drive + installable PWA + Android share-target upload. WebDAV is next — then rclone, Finder, Explorer, Cyberduck mounts. Native clients via WebDAV are next.' },
   { q:'How does migrating work?', a:'No one-click importer yet. Export from Google Takeout (files + photos) or Nextcloud, then upload into Noatun — see the migration sketch. We validate the path before launch so switching feels safe.' },
   { q:'Will it really fit a $5 / 1 GB VPS?', a:'Measured without SSO: ~0.4 GiB idle, under ~0.8 GiB with a light Drive+Photos library (Aug 2026). Safe story: 1 GB minimum, 2 GB recommended for real photo libraries + AI tagging. Full benchmark linked.' },
   { q:'Is it better than Immich for photos?', a:'Immich wins pure photo backup — we concede that. Noatun wins when you also need Drive + light docs/notes in one login, one backup, one compose file. If you only need photos, use Immich.' },
