@@ -24,7 +24,9 @@
 
 *{ scrollbar-width: thin; scrollbar-color: #243036 #0E1A1E; }
 html{ scroll-behavior: smooth; }
+#root{ width:100%; min-width:0; max-width:100vw; overflow-x:clip; }
 body{
+  overflow-x: hidden;
   background: var(--color-fjord);
   color: var(--color-mist);
   font-family: var(--font-sans);
@@ -32,19 +34,20 @@ body{
   text-rendering: optimizeLegibility;
 }
 
-/* — Nordic fjord: deep water + pine fog + harbour lantern — */
-.fjord{
+/* Deep ink, warm signal, and a quiet technical texture. */
+.hero{
   position: relative; isolation: isolate; overflow: clip;
   background:
-    radial-gradient(1100px 620px at 12% -10%, rgba(107,163,168,0.16), transparent 62%),
-    radial-gradient(900px 560px at 88% 8%, rgba(196,90,42,0.13), transparent 60%),
+    radial-gradient(900px 540px at 8% -12%, rgba(107,163,168,0.18), transparent 64%),
+    radial-gradient(720px 480px at 92% 12%, rgba(196,90,42,0.14), transparent 62%),
     linear-gradient(180deg, #0E1A1E 0%, #0A1418 100%);
 }
-.fjord::after{
+.hero::after{
   content:""; position:absolute; inset:auto 0 0 0; height:1px;
-  background: linear-gradient(90deg, transparent, rgba(196,90,42,0.22), transparent);
+  background: linear-gradient(90deg, transparent, rgba(196,90,42,0.28), transparent);
   pointer-events:none;
 }
+.fjord{ position:relative; isolation:isolate; overflow:clip; background:var(--color-fjord); }
 .aurora{
   position:absolute; inset: -20% -10% auto -10%; height: 420px;
   background: radial-gradient(800px 320px at 50% 0%, rgba(107,163,168,0.14), transparent 65%),
@@ -66,11 +69,20 @@ body{
 }
 ::selection{ background: rgba(196,90,42,0.22); }
 :focus-visible{ outline:2px solid var(--color-harbour-ring); outline-offset:2px; }
-.reveal{ opacity:0; transform: translateY(10px); transition: opacity 520ms ease, transform 520ms ease; }
+.reveal{ opacity:1; transform:none; transition: opacity 520ms ease, transform 520ms ease; }
 .reveal.in{ opacity:1; transform:none; }
-@media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none } }
+@media (prefers-reduced-motion: reduce){ .reveal{ transition:none } }
 .bento{ transition: transform 160ms ease, border-color 160ms ease; }
 .bento:hover{ transform: translateY(-2px); border-color: rgba(230,232,227,0.12); }
 
-/* Display type: tight, high contrast, not 72px tech-hero */
+/* Display type: editorial contrast against practical interface text. */
 .display{ font-family: var(--font-display); font-weight: 400; letter-spacing: -0.03em; }
+.hero h1, .hero h2, .hero h3{ text-wrap: balance; }
+summary::-webkit-details-marker{ display:none; }
+@media (max-width: 640px){
+  .rune-grid{ opacity:0.035; }
+  .hero .aurora{ height:320px; }
+  .header-actions{ position:fixed; right:20px; left:auto; top:14px; transform:none; z-index:50; }
+  .hero .reveal{ width:100%; max-width:calc(100vw - 40px); }
+  .product-window{ width:calc(100vw - 40px); }
+}

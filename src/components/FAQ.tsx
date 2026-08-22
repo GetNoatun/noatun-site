@@ -1,22 +1,23 @@
-const faqs=[
-  { q:'Does it sync like Nextcloud / Dropbox?', a:'Not yet. Today: browser Drive + installable PWA + Android share-target upload. WebDAV is next — then rclone, Finder, Explorer, Cyberduck mounts. Native clients via WebDAV are next.' },
-  { q:'How does migrating work?', a:'No one-click importer yet. Export from Google Takeout (files + photos) or Nextcloud, then upload into Noatun — see the migration sketch. We validate the path before launch so switching feels safe.' },
-  { q:'Will it really fit a $5 / 1 GB VPS?', a:'Measured without SSO: ~0.4 GiB idle, under ~0.8 GiB with a light Drive+Photos library (Aug 2026). Safe story: 1 GB minimum, 2 GB recommended for real photo libraries + AI tagging. Full benchmark linked.' },
-  { q:'Is it better than Immich for photos?', a:'Immich wins pure photo backup — we concede that. Noatun wins when you also need Drive + light docs/notes in one login, one backup, one compose file. If you only need photos, use Immich.' },
-  { q:'What does it cost?', a:'Self-host stays AGPL-3.0 and free. Managed Noatun targets $8–20/mo family (anchored to €3–15 managed Nextcloud). Early waitlist locks a founding price.' },
+const faqs = [
+  { q: 'Where does Noatun run?', a: 'On your hardware or a VPS you control. It is designed for the home lab and for small, practical deployments — not a cloud bill that grows with every feature.' },
+  { q: 'What can I keep in it?', a: 'Your everyday essentials: files, photos, notes, and shareable links. Noatun focuses on making those things feel like one coherent product.' },
+  { q: 'Do I need to be a Linux expert?', a: 'Noatun is built for people comfortable running their own infrastructure, but the experience should still feel approachable once it is running. The goal is less maintenance, not more.' },
+  { q: 'Can I choose managed hosting?', a: 'Yes. Self-hosting is the foundation; a managed option is planned for people who want the same product without maintaining the server.' },
+  { q: 'How do I get early access?', a: 'Join the waitlist above. We will share launch news, early access, and founding pricing with the people who sign up.' },
 ]
-export default function FAQ(){
+
+export default function FAQ() {
   return (
-    <div className="divide-y divide-zinc-200 rounded-[18px] bg-white ring-1 ring-zinc-200 overflow-hidden">
-      {faqs.map((f,i)=> (
-        <details key={i} className="group">
-          <summary className="list-none flex items-center justify-between gap-4 px-5 py-4 cursor-pointer">
-            <span className="text-[14px] font-medium tracking-tight text-zinc-900">{f.q}</span>
-            <span className="shrink-0 h-7 w-7 grid place-items-center rounded-full bg-zinc-100 ring-1 ring-zinc-200 text-zinc-500 group-open:rotate-180 transition">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4.5L6 8.5L10 4.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+    <div className="overflow-hidden rounded-[18px] bg-white ring-1 ring-zinc-200">
+      {faqs.map((faq, index) => (
+        <details key={faq.q} className={`group ${index < faqs.length - 1 ? 'border-b border-zinc-200' : ''}`}>
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4.5 text-left">
+            <span className="text-[14px] font-medium tracking-[-0.01em] text-zinc-900">{faq.q}</span>
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-zinc-100 text-zinc-500 transition group-open:rotate-180">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden><path d="M2 4.5 6 8.5l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </span>
           </summary>
-          <div className="px-5 pb-4 -mt-1"><p className="text-[13px] leading-relaxed text-zinc-600">{f.a}</p></div>
+          <p className="px-5 pb-5 text-[13px] leading-relaxed text-zinc-600">{faq.a}</p>
         </details>
       ))}
     </div>

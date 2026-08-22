@@ -1,289 +1,154 @@
 import { useEffect, useMemo, useState } from 'react'
-import WaitlistForm from './components/WaitlistForm'
+import type { CSSProperties } from 'react'
 import FAQ from './components/FAQ'
+import WaitlistForm from './components/WaitlistForm'
 
 type Success = { email: string; referralCode: string; referralUrl: string; referralCount: number }
 
-export default function App(){
-  const [success, setSuccess] = useState<Success|null>(null)
+type Feature = { number: string; title: string; description: string }
+
+const features: Feature[] = [
+  { number: '01', title: 'Your server. Your rules.', description: 'Run Noatun at home or on a VPS. Keep your files in infrastructure you can see, move, and control.' },
+  { number: '02', title: 'One place for real life.', description: 'Files, photos, notes, and shared links in one focused workspace — not a pile of disconnected services.' },
+  { number: '03', title: 'Light enough to live with.', description: 'A small, deliberate stack for the home labber who cares about RAM, reliability, and a quiet upgrade path.' },
+]
+
+const audience = [
+  { label: 'SELF-HOSTERS', title: 'The stack is yours.', body: 'Bring your own server, storage, backups, and domain. Noatun gives the setup a product-quality front door.' },
+  { label: 'PRIVACY-MINDED', title: 'Keep your life off the ad grid.', body: 'Your personal files should not be someone else’s product. Store them where you choose and share them on your terms.' },
+  { label: 'HOME LABBERS', title: 'Less glue. More living.', body: 'Replace the five-app juggling act with one calm place for the things you actually use every day.' },
+]
+
+function Mark({ small = false }: { small?: boolean }) {
+  return (
+    <span className={`${small ? 'h-7 w-7 rounded-[9px]' : 'h-9 w-9 rounded-[12px]'} grid place-items-center bg-[var(--color-harbour)] text-white shadow-[0_5px_18px_rgba(196,90,42,0.25)]`} aria-hidden>
+      <svg width={small ? 14 : 18} height={small ? 14 : 18} viewBox="0 0 18 18" fill="none">
+        <path d="M3 8.2 9 3l6 5.2v6.1c0 .9-.7 1.7-1.7 1.7H4.7c-.9 0-1.7-.8-1.7-1.7V8.2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M6.1 16v-5.1h5.8V16M9 7.1v.05" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </span>
+  )
+}
+
+function ProductWindow() {
+  const nav = ['Overview', 'Files', 'Photos', 'Notes', 'Shared']
+  const files = [
+    { name: 'Q2_Board_Deck.pdf', meta: '2.4 MB · yesterday', type: 'PDF' },
+    { name: 'Beach_2024-08.heic', meta: '4.1 MB · Photos', type: 'IMG' },
+    { name: 'House_projects.md', meta: 'Edited 2h ago', type: 'DOC' },
+  ]
+  return (
+    <div className="relative min-w-0 w-full">
+      <div className="absolute -inset-5 rounded-[34px] bg-[radial-gradient(ellipse_at_center,rgba(196,90,42,0.18),transparent_68%)] blur-2xl" aria-hidden />
+      <div className="product-window relative w-full max-w-full overflow-hidden rounded-[22px] bg-[var(--color-paper)] p-2.5 sm:p-3 shadow-[0_32px_100px_rgba(0,0,0,0.34)] ring-1 ring-white/20">
+        <div className="overflow-hidden rounded-[16px] bg-[#f8f8f5] ring-1 ring-black/10">
+          <div className="flex h-10 items-center gap-1.5 border-b border-zinc-200 bg-white px-3">
+            <span className="h-2.5 w-2.5 rounded-full bg-zinc-300" /><span className="h-2.5 w-2.5 rounded-full bg-zinc-300" /><span className="h-2.5 w-2.5 rounded-full bg-zinc-300" />
+            <div className="ml-3 flex min-w-0 items-center gap-2 font-mono text-[10px] tracking-[0.11em] text-zinc-400"><Mark small /><span className="truncate">NOATUN / MY SPACE</span></div>
+            <span className="ml-auto hidden rounded-full bg-emerald-50 px-2.5 py-1 font-mono text-[10px] font-semibold tracking-wide text-emerald-700 sm:inline-flex">ALL SYSTEMS READY</span>
+          </div>
+          <div className="grid min-w-0 grid-cols-12 gap-3 p-3 sm:gap-4 sm:p-4">
+            <aside className="col-span-12 min-w-0 sm:col-span-4">
+              <div className="rounded-[13px] bg-[#f1f2ef] p-2.5 ring-1 ring-zinc-200/80 sm:p-3">
+                <div className="flex items-center justify-between px-1 font-mono text-[10px] font-semibold tracking-[0.12em] text-zinc-400"><span>MY SPACE</span><span>•••</span></div>
+                <nav className="mt-2 space-y-1" aria-label="Product preview navigation">
+                  {nav.map((item, index) => <div key={item} className={`flex items-center gap-2 rounded-[9px] px-2.5 py-2 text-[11px] ${index === 0 ? 'bg-zinc-900 font-medium text-white' : 'text-zinc-600'}`}><span className={`h-1.5 w-1.5 rounded-full ${index === 0 ? 'bg-[var(--color-harbour)]' : 'bg-zinc-300'}`} />{item}</div>)}
+                </nav>
+                <div className="mt-5 border-t border-zinc-200 pt-3">
+                  <div className="flex justify-between font-mono text-[10px] text-zinc-500"><span>STORAGE</span><span>42%</span></div>
+                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-zinc-200"><div className="h-full w-[42%] rounded-full bg-[var(--color-harbour)]" /></div>
+                  <div className="mt-1 font-mono text-[10px] text-zinc-400">2.1 / 5 GB used</div>
+                </div>
+              </div>
+            </aside>
+            <main className="col-span-12 min-w-0 sm:col-span-8">
+              <div className="flex items-end justify-between"><div><div className="font-mono text-[10px] tracking-[0.12em] text-zinc-400">TUESDAY, AUGUST 26</div><h3 className="mt-1 font-display text-[23px] tracking-[-0.04em] text-zinc-900">Good morning.</h3></div><button className="hidden h-8 items-center rounded-full bg-zinc-900 px-3 text-[11px] font-semibold text-white sm:inline-flex">Upload</button></div>
+              <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3"><div className="min-w-0 rounded-[11px] bg-white p-2.5 ring-1 ring-zinc-200"><div className="font-mono text-[9px] text-zinc-400">FILES</div><div className="mt-1 font-display text-[19px] text-zinc-900">128</div></div><div className="min-w-0 rounded-[11px] bg-white p-2.5 ring-1 ring-zinc-200"><div className="font-mono text-[9px] text-zinc-400">PHOTOS</div><div className="mt-1 font-display text-[19px] text-zinc-900">1,204</div></div><div className="min-w-0 rounded-[11px] bg-white p-2.5 ring-1 ring-zinc-200"><div className="font-mono text-[9px] text-zinc-400">SHARED</div><div className="mt-1 font-display text-[19px] text-zinc-900">06</div></div></div>
+              <div className="mt-3 rounded-[13px] bg-zinc-900 p-2.5 sm:p-3"><div className="mb-2 flex items-center justify-between"><span className="font-mono text-[10px] tracking-[0.12em] text-white/50">RECENTLY UPDATED</span><span className="font-mono text-[10px] text-white/35">VIEW ALL →</span></div><div className="space-y-1.5">{files.map(file => <div key={file.name} className="flex items-center gap-2.5 rounded-[10px] bg-white/[0.07] px-2.5 py-2 ring-1 ring-white/10"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] bg-[var(--color-harbour-soft)] font-mono text-[8px] font-semibold text-[var(--color-harbour)]">{file.type}</span><div className="min-w-0 flex-1"><div className="truncate text-[11px] font-medium text-white/90">{file.name}</div><div className="truncate font-mono text-[9px] text-white/40">{file.meta}</div></div><span className="text-white/25">•••</span></div>)}</div></div>
+            </main>
+          </div>
+        </div>
+      </div>
+      <div className="absolute -bottom-4 -right-2 hidden items-center gap-2 rounded-full bg-white px-3 py-2 font-mono text-[10px] font-semibold text-zinc-700 shadow-xl ring-1 ring-zinc-200 sm:flex"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />RUNNING ON YOUR INFRASTRUCTURE</div>
+    </div>
+  )
+}
+
+export default function App() {
+  const [success, setSuccess] = useState<Success | null>(null)
   const [copied, setCopied] = useState(false)
   const [mobileNav, setMobileNav] = useState(false)
+  const referralLink = useMemo(() => success?.referralUrl ?? '', [success])
 
-  useEffect(()=>{ const h=window.location.hash; if(h.startsWith('#joined=')){ try{ const raw=decodeURIComponent(h.slice('#joined='.length)); const s=JSON.parse(atob(raw)) as Success; setSuccess(s); window.history.replaceState(null,'', window.location.pathname + window.location.search)}catch{} } }, [])
-  const referralLink = useMemo(()=> success?.referralUrl ?? '', [success])
-  async function copyReferral(){ if(!referralLink) return; await navigator.clipboard.writeText(referralLink).catch(()=>{}); setCopied(true); setTimeout(()=>setCopied(false), 1800) }
-  useEffect(()=>{
-    const els=document.querySelectorAll('.reveal')
-    const io=new IntersectionObserver((entries)=>{ for(const e of entries) if(e.isIntersecting) e.target.classList.add('in') },{ rootMargin:'0px 0px -8% 0px', threshold:0.12 })
-    els.forEach(el=> io.observe(el)); return ()=> io.disconnect()
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash.startsWith('#joined=')) {
+      try { setSuccess(JSON.parse(atob(decodeURIComponent(hash.slice(8)))) as Success); window.history.replaceState(null, '', window.location.pathname + window.location.search) } catch { /* invalid referral payload */ }
+    }
   }, [])
 
+  useEffect(() => {
+    const elements = document.querySelectorAll('.reveal')
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => entry.isIntersecting && entry.target.classList.add('in')), { rootMargin: '0px 0px -8% 0px', threshold: 0.12 })
+    elements.forEach(element => observer.observe(element))
+    return () => observer.disconnect()
+  }, [])
+
+  async function copyReferral() {
+    if (!referralLink) return
+    await navigator.clipboard.writeText(referralLink).catch(() => undefined)
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 1800)
+  }
+
   return (
-    <div className="min-h-screen bg-[var(--color-fjord)] text-[var(--color-mist)]">
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-[var(--color-fjord)]/75 border-b border-white/[0.06]">
-        <div className="mx-auto max-w-[1240px] px-4 sm:px-6 h-[56px] flex items-center gap-3">
-          <a href="#" className="flex items-center gap-2.5 shrink-0" aria-label="Noatun — home">
-            <span className="h-7 w-7 grid place-items-center rounded-[10px] bg-[var(--color-harbour)] text-white">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden><path d="M2.2 6L7 2.2L11.8 6V11.2C11.8 11.9 11.2 12.5 10.5 12.5H3.5C2.8 12.5 2.2 11.9 2.2 11.2V6Z" stroke="white" strokeWidth="1.35" strokeLinejoin="round"/><path d="M4.6 12.5V8.4H9.4V12.5" stroke="white" strokeWidth="1.15" strokeLinejoin="round"/><path d="M7 5.2V5.22" stroke="white" strokeWidth="1.6" strokeLinecap="round"/></svg>
-            </span>
-            <span className="text-[13px] font-semibold tracking-tight text-white">Noatun</span>
-            <span className="hidden sm:inline font-mono text-[10px] tracking-[0.14em] text-white/40">NOATUN</span>
-          </a>
-          <span className="hidden md:inline-flex ml-4 rounded-full bg-white/[0.06] ring-1 ring-white/10 px-2.5 py-1 font-mono text-[10px] tracking-[0.12em] text-white/55">PRIVATE · LIGHTWEIGHT · HONEST</span>
-          <div className="ml-auto flex items-center gap-2">
-            <a href="#waitlist" className="hidden sm:inline-flex h-9 items-center rounded-full bg-white px-4 font-mono text-[12px] font-semibold tracking-wide text-zinc-900 hover:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-white">Join waitlist</a>
-            <a href="https://github.com/fifthsegment/noatun" target="_blank" rel="noreferrer" className="inline-flex h-9 items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 px-3.5 text-[13px] font-medium text-white/75 hover:bg-white/[0.10] focus-visible:ring-2 focus-visible:ring-white/20">GitHub ↗</a>
-            <button aria-label="Menu" aria-expanded={mobileNav} onClick={()=>setMobileNav(v=>!v)} className="sm:hidden h-9 w-9 grid place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-white/80">{mobileNav? '×':'≡'}</button>
-          </div>
+    <div className="min-h-screen overflow-hidden bg-[var(--color-fjord)] text-[var(--color-mist)]">
+      <header className="relative z-40 border-b border-white/[0.08] bg-[var(--color-fjord)]/80 backdrop-blur-xl">
+        <div className="relative mx-auto flex h-16 w-full min-w-0 max-w-[1180px] items-center gap-3 px-5 sm:px-7">
+          <a href="#top" className="flex items-center gap-2.5" aria-label="Noatun home"><Mark small /><span className="text-[14px] font-semibold tracking-[-0.02em] text-white">Noatun</span></a>
+          <div className="ml-8 hidden items-center gap-7 text-[13px] text-white/50 md:flex"><a href="#why" className="transition hover:text-white">Why Noatun</a><a href="#for-you" className="transition hover:text-white">Made for you</a><a href="#faq" className="transition hover:text-white">FAQ</a></div>
+          <div className="header-actions ml-auto flex shrink-0 items-center gap-2"><a href="https://github.com/fifthsegment/noatun" target="_blank" rel="noreferrer" className="hidden h-9 items-center rounded-full px-3.5 text-[13px] text-white/65 transition hover:bg-white/[0.07] hover:text-white sm:inline-flex">GitHub <span className="ml-1 text-white/35">↗</span></a><a href="#waitlist" className="inline-flex h-9 items-center rounded-full bg-white px-3.5 text-[13px] font-semibold text-zinc-900 transition hover:bg-zinc-100 sm:px-4"><span className="sm:hidden">Join</span><span className="hidden sm:inline">Get early access</span></a><button className="grid h-9 w-9 place-items-center rounded-full bg-white/[0.06] text-white/80 sm:hidden" aria-label="Open menu" aria-expanded={mobileNav} onClick={() => setMobileNav(value => !value)}>{mobileNav ? '×' : '≡'}</button></div>
         </div>
-        {mobileNav && (
-          <div className="sm:hidden border-t border-white/[0.06] bg-[var(--color-fjord)]/95 backdrop-blur px-4 py-3 flex flex-col gap-1">
-            <a href="#why" onClick={()=>setMobileNav(false)} className="px-3 py-2.5 rounded-xl text-[14px] text-white/80 hover:bg-white/[0.06]">Why Noatun</a>
-            <a href="#faq" onClick={()=>setMobileNav(false)} className="px-3 py-2.5 rounded-xl text-[14px] text-white/80 hover:bg-white/[0.06]">FAQ</a>
-            <a href="#waitlist" onClick={()=>setMobileNav(false)} className="h-11 grid place-items-center rounded-xl bg-white text-zinc-900 font-semibold">Join waitlist</a>
-          </div>
-        )}
+        {mobileNav && <nav className="border-t border-white/[0.08] bg-[var(--color-fjord)] px-5 py-3 sm:hidden"><a href="#why" onClick={() => setMobileNav(false)} className="block rounded-lg px-3 py-2.5 text-sm text-white/70">Why Noatun</a><a href="#for-you" onClick={() => setMobileNav(false)} className="block rounded-lg px-3 py-2.5 text-sm text-white/70">Made for you</a><a href="#faq" onClick={() => setMobileNav(false)} className="block rounded-lg px-3 py-2.5 text-sm text-white/70">FAQ</a></nav>}
       </header>
 
-      <section className="fjord relative overflow-clip">
-        <div className="aurora" aria-hidden />
-        <div className="rune-grid" aria-hidden />
-        <div className="mx-auto max-w-[1240px] px-4 sm:px-6 pt-10 sm:pt-14 pb-10 sm:pb-12">
-          <div className="reveal inline-flex items-center gap-2 rounded-full bg-white/[0.06] ring-1 ring-white/10 px-3 py-1.5 backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.7)]" />
-            <span className="font-mono text-[11px] tracking-[0.12em] text-white/70">YOUR PRIVATE CLOUD — $5 VPS · ONE COMPOSE FILE</span>
-            <span className="hidden sm:inline-flex ml-1 rounded-full bg-[var(--color-harbour-soft)] ring-1 ring-[var(--color-harbour-ring)] px-2 py-0.5 font-mono text-[10px] tracking-wide text-amber-100">Invite 3 → unlock early rate</span>
-          </div>
-
-          <div className="mt-6 grid grid-cols-12 gap-8 lg:gap-10 items-start">
-            <div className="col-span-12 lg:col-span-7 reveal" style={{ transitionDelay: '60ms' } as any}>
-              <h1 className="display leading-[0.90]" style={{ fontSize: 'clamp(38px, 6vw, 78px)' }}>
-                <span className="block text-[var(--color-mist)]">Your private</span>
-                <span className="block text-[var(--color-mist)]">harbour<span className="font-serif italic font-normal tracking-[-0.02em] text-white/85">.</span></span>
-                <span className="mt-1 block font-serif italic font-normal tracking-[-0.02em] text-[var(--color-harbour)]" style={{ fontSize: 'clamp(18px, 2.2vw, 24px)', lineHeight: 1.2 }}>— that fits a $5 VPS</span>
-              </h1>
-              <p className="mt-4 max-w-[56ch] text-[15px] sm:text-[16px] leading-[1.65] text-white/60 text-pretty">
-                One lightweight personal cloud — files, photo stream, docs, notes — you <span className="text-white/90 font-medium">self-host</span> or <span className="text-white/90 font-medium">we host for you</span>. One compose file · open core coming
-              </p>
-              <div className="mt-5 flex flex-wrap gap-2 font-mono text-[11px]">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.06] ring-1 ring-white/[0.08] px-3 py-1.5 text-white/65">~0.4 GiB idle · &lt;0.8 GiB light library</span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.06] ring-1 ring-white/[0.08] px-3 py-1.5 text-white/65">One compose file</span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.06] ring-1 ring-white/[0.08] px-3 py-1.5 text-white/65">AGPL-3.0</span>
+      <main id="top">
+        <section className="hero relative overflow-hidden">
+          <div className="aurora" aria-hidden /><div className="rune-grid" aria-hidden />
+          <div className="relative mx-auto w-full min-w-0 max-w-[1180px] px-5 pb-16 pt-14 sm:px-7 sm:pb-24 sm:pt-20 lg:pt-24">
+            <div className="grid grid-cols-12 items-center gap-10 lg:gap-14">
+              <div className="reveal col-span-12 lg:col-span-5">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 font-mono text-[10px] font-medium tracking-[0.12em] text-white/60"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.7)]" />PRIVATE CLOUD, PROPERLY YOURS</div>
+                <h1 className="mt-6 font-display text-[clamp(47px,6.5vw,82px)] leading-[0.88] tracking-[-0.055em] text-white">The cloud<br />should be <span className="font-serif italic font-normal text-[var(--color-harbour)]">yours.</span></h1>
+                <p className="mt-6 max-w-[48ch] text-[16px] leading-[1.65] text-white/60 sm:text-[17px]">Noatun is the personal cloud for people who run their own infrastructure. Files, photos, notes, and sharing — on your server, under your control.</p>
+                <div className="mt-7 flex flex-wrap items-center gap-3"><a href="#waitlist" className="inline-flex h-12 items-center rounded-full bg-[var(--color-harbour)] px-6 text-[14px] font-semibold text-white shadow-[0_10px_30px_rgba(196,90,42,0.24)] transition hover:brightness-110 focus-visible:ring-2 focus-visible:ring-[var(--color-harbour-ring)]">Join the waitlist <span className="ml-2">→</span></a><a href="#why" className="inline-flex h-12 items-center rounded-full border border-white/10 px-5 text-[14px] font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.05] hover:text-white"><span className="sm:hidden">See why</span><span className="hidden sm:inline">See why it matters</span></a></div>
+                <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[10px] tracking-wide text-white/35"><span>SELF-HOST FIRST</span><span>SMALL FOOTPRINT</span><span>NO VENDOR LOCK-IN</span></div>
               </div>
-              <div className="mt-7 flex flex-wrap items-center gap-3">
-                <a href="#waitlist" className="inline-flex h-[46px] items-center rounded-full bg-[var(--color-harbour)] px-6 text-[14px] font-semibold tracking-[-0.01em] text-white hover:brightness-[1.06] focus-visible:ring-2 focus-visible:ring-[var(--color-harbour-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-fjord)]">Join waitlist →</a>
-                <span className="font-mono text-[11px] tracking-wide text-white/35">1 GB min / 2 GB recommended</span>
-              </div>
-              <p className="mt-3 font-mono text-[11px] tracking-wide text-white/35">PWA + share-target today · WebDAV next · <a href="https://github.com/fifthsegment/noatun/blob/master/docs/ram-benchmark.md" className="underline decoration-white/20 underline-offset-4 hover:text-white/60">RAM benchmark</a> · <a href="https://github.com/fifthsegment/noatun/blob/master/docs/sync-path-v1.md" className="underline decoration-white/20 underline-offset-4 hover:text-white/60">sync path</a></p>
-            </div>
-
-            <div className="col-span-12 lg:col-span-5 reveal" style={{ transitionDelay: '140ms' } as any}>
-              <div className="relative rounded-[22px] bg-[var(--color-paper)] ring-1 ring-black/10 p-3 sm:p-4 shadow-[0_24px_80px_rgba(12,20,24,0.35)]">
-                <div className="rounded-[16px] bg-white ring-1 ring-zinc-200 overflow-hidden">
-                  <div className="h-9 flex items-center gap-1.5 px-3 border-b border-zinc-200 bg-zinc-50">
-                    <span className="h-2.5 w-2.5 rounded-full bg-zinc-300" /><span className="h-2.5 w-2.5 rounded-full bg-zinc-300" /><span className="h-2.5 w-2.5 rounded-full bg-zinc-300" />
-                    <span className="ml-3 font-mono text-[10px] tracking-[0.12em] text-zinc-500">NOATUN.APP — DRIVE / PHOTOS</span>
-                    <span className="ml-auto hidden sm:inline rounded-full bg-[var(--color-harbour-soft)] ring-1 ring-[var(--color-harbour-ring)] px-2 py-0.5 font-mono text-[10px] tracking-wide font-semibold text-[var(--color-harbour)]">LIVE PREVIEW</span>
-                  </div>
-                  <div className="p-3 sm:p-4 grid grid-cols-12 gap-3">
-                    <div className="col-span-12 sm:col-span-5">
-                      <div className="rounded-[12px] bg-zinc-50 ring-1 ring-zinc-200 p-3">
-                        <div className="font-mono text-[10px] tracking-[0.12em] font-semibold text-zinc-500">BOATHOUSE — NAV</div>
-                        <div className="mt-2 space-y-1 text-[11px]">
-                          {['Files','Photos','Recent','Notes','Contacts'].map((n,i)=> (
-                            // @ts-ignore
-                            <div key={n} className={`flex items-center gap-2 rounded-lg px-2.5 py-1.5 ${i===0? 'bg-zinc-900 text-white' : 'bg-white ring-1 ring-zinc-200 text-zinc-600'}`}>{n}{i===0 && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[var(--color-harbour)]" />}</div>
-                          ))}
-                        </div>
-                        <div className="mt-3 h-1.5 rounded-full bg-zinc-200 overflow-hidden"><div className="h-full w-[42%] bg-[var(--color-harbour)]" /></div>
-                        <div className="mt-1 font-mono text-[10px] text-zinc-500">2.1 / 5 GB · 42% — one backup story</div>
-                      </div>
-                    </div>
-                    <div className="col-span-12 sm:col-span-7">
-                      <div className="rounded-[12px] bg-zinc-900 p-3 text-white">
-                        <div className="flex items-center gap-2"><span className="flex-1 h-7 rounded-full bg-white/10 ring-1 ring-white/10" /><span className="h-7 rounded-full bg-white px-3 grid place-items-center text-[11px] font-semibold text-zinc-900">Upload</span></div>
-                        <div className="mt-3 grid gap-2">
-                          {[
-                            { n: 'Q2_Board_Deck.pdf', m: '2.4 MB · yesterday' },
-                            { n: 'Beach_2024-08.heic', m: 'AI: beach, ocean · 4.1 MB' },
-                            { n: 'Contract.docx', m: 'Edited 2h ago' },
-                          ].map(f=> (
-                            <div key={f.n} className="flex items-center gap-2.5 rounded-xl bg-white/[0.06] ring-1 ring-white/10 px-3 py-2">
-                              <span className="h-7 w-7 grid place-items-center rounded-lg bg-[var(--color-harbour-soft)] ring-1 ring-[var(--color-harbour-ring)] text-[10px] text-amber-100">◧</span>
-                              <div className="min-w-0"><div className="text-[12px] font-medium text-white/90 truncate">{f.n}</div><div className="font-mono text-[11px] text-white/40 truncate">{f.m}</div></div>
-                              <span className="ml-auto text-white/25">⋯</span>
-                            </div>
-                          ))}
-                          <div className="rounded-xl border border-dashed border-white/15 bg-white/[0.04] p-2.5 text-center">
-                            <div className="font-mono text-[10px] tracking-[0.14em] text-white/60">DRAG · PWA SHARE-TARGET</div>
-                            <div className="text-[11px] text-white/40">Photos + docs, one harbour</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-2 flex gap-2 font-mono text-[10px]">
-                        <span className="rounded-full bg-white ring-1 ring-zinc-200 px-2.5 py-1 text-zinc-700">noatun.app</span>
-                        <span className="rounded-full bg-zinc-900 text-white px-2.5 py-1">open: noatun.app</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="pointer-events-none absolute -bottom-3 -right-3 hidden sm:inline-flex items-center gap-1.5 rounded-full bg-white ring-1 ring-zinc-200 px-3 py-1.5 font-mono text-[11px] font-medium text-zinc-700 shadow-xl"><span className="h-1.5 w-1.5 rounded-full bg-[var(--color-harbour)]" /> pwa-512 · share to Noatun</div>
-              </div>
+              <div className="reveal col-span-12 min-w-0 lg:col-span-7" style={{ transitionDelay: '100ms' } as CSSProperties}><ProductWindow /></div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="waitlist" className="mx-auto max-w-[1240px] px-4 sm:px-6 -mt-2 sm:mt-0">
-        <div className="reveal mx-auto max-w-[640px] rounded-[22px] bg-[var(--color-paper)] text-zinc-900 p-5 sm:p-6 shadow-[0_20px_80px_rgba(12,20,24,0.22)] ring-1 ring-black/5">
-          {!success ? (
-            <>
-              <h2 className="display text-[22px] leading-none tracking-[-0.02em]">Join the harbour.</h2>
-              <p className="mt-1 text-[13px] leading-relaxed text-zinc-600">Get launch + early Managed pricing. Invite 3 friends → jump the queue and lock a founding price.</p>
-              <div className="mt-4"><WaitlistForm onSuccess={setSuccess} /></div>
-              <p className="mt-2 text-center font-mono text-[11px] text-zinc-500">No spam. Unsubscribe anytime. AGPL-3.0 when we open.</p>
-            </>
-          ) : (
-            <div className="flex gap-3">
-              <span className="mt-0.5 h-8 w-8 grid place-items-center rounded-full bg-emerald-600 text-white">✓</span>
-              <div className="min-w-0 flex-1">
-                <h3 className="display text-[18px] font-semibold tracking-tight">You’re in — {success.email}</h3>
-                <p className="mt-1 text-[13px] text-zinc-600">Want earlier access? Share your link — the harbour is warmer with 2–3.</p>
-                <div className="mt-3 flex flex-col sm:flex-row gap-2">
-                  <div className="flex-1 min-w-0 rounded-[12px] bg-zinc-900 text-white px-3 py-2.5 font-mono text-[12px] truncate">{referralLink}</div>
-                  <button onClick={copyReferral} className="h-[42px] shrink-0 rounded-[12px] bg-zinc-900 px-4 text-[13px] font-semibold text-white hover:bg-black focus-visible:ring-2 focus-visible:ring-zinc-900">{copied ? 'Copied' : 'Copy link'}</button>
-                </div>
-                <p className="mt-2 font-mono text-[11px] text-zinc-500">{success.referralCount} signed up via you → early price locked</p>
-                <button onClick={()=>setSuccess(null)} className="mt-3 text-[12px] font-medium text-zinc-600 hover:text-zinc-900 underline underline-offset-4">Join with another email</button>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="mx-auto max-w-[640px] mt-3 flex justify-center">
-          <a href="#why" className="font-mono text-[12px] font-medium text-white/45 hover:text-white/75 underline underline-offset-4">How does it compare? →</a>
-        </div>
-      </section>
-
-      <section id="why" className="mx-auto max-w-[1240px] px-4 sm:px-6 py-12 sm:py-16">
-        <div className="grid grid-cols-12 gap-6 sm:gap-8 items-start">
-          <div className="col-span-12 lg:col-span-7 reveal">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] ring-1 ring-white/10 px-3 py-1 font-mono text-[11px] tracking-[0.12em] font-semibold text-white/60">THE PROBLEM — ONE JOB</div>
-            <h2 className="mt-4 display text-[30px] sm:text-[38px] font-bold tracking-[-0.03em] leading-[0.9] text-white text-balance">You wanted your<br />own Drive. You got<br /><span className="text-white/45 font-serif italic font-normal">a second full-time job.</span></h2>
-            <p className="mt-4 max-w-[56ch] text-[15px] leading-relaxed text-white/60">Nextcloud eats the box. Immich owns photos but not files. Stitching five apps means five updates and one bad weekend. Google One is easy — and it indexes the family album.</p>
-            <blockquote className="mt-6 rounded-[14px] bg-[var(--color-harbour-soft)] ring-1 ring-[var(--color-harbour-ring)] px-4 py-3 text-[13px] leading-relaxed text-amber-50">
-              “I do not want my cloud storage to be a debugging project.”
-              <span className="block mt-1 font-mono text-[11px] tracking-wide text-amber-200/60">— VOC · Nextcloud forums / funkyton.com</span>
-            </blockquote>
-            <div className="mt-6 grid grid-cols-3 gap-3">
-              {[
-                { k:'RAM', v:'2–8 GB', s:'Nextcloud Hub realistic' },
-                { k:'APPS', v:'5+ to stitch', s:'Immich + Filebrowser + …' },
-                { k:'COST', v:'$600 / 5y', s:'Google One 2 TB family' },
-              ].map(x=> (
-                <div key={x.k} className="bento rounded-[14px] bg-white/[0.04] ring-1 ring-white/[0.07] p-3">
-                  <div className="font-mono text-[10px] tracking-[0.12em] text-white/35">{x.k}</div>
-                  <div className="mt-1 display text-[18px] font-bold tracking-tight text-white">{x.v}</div>
-                  <div className="font-mono text-[11px] text-white/40">{x.s}</div>
-                </div>
-              ))}
-            </div>
-            <a href="#waitlist" className="mt-6 inline-flex h-10 items-center rounded-full bg-white px-5 text-[13px] font-semibold text-zinc-900 hover:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-white">Join waitlist →</a>
+        <section id="waitlist" className="relative z-10 mx-auto max-w-[1180px] px-5 sm:px-7">
+          <div className="reveal mx-auto -mt-1 max-w-[660px] rounded-[22px] bg-[var(--color-paper)] p-5 text-zinc-900 shadow-[0_24px_80px_rgba(0,0,0,0.22)] ring-1 ring-black/10 sm:p-6">
+            {!success ? <><div className="flex items-start justify-between gap-5"><div><div className="font-mono text-[10px] font-semibold tracking-[0.14em] text-[var(--color-harbour)]">EARLY ACCESS</div><h2 className="mt-1 font-display text-[28px] leading-none tracking-[-0.04em]">Be first to run it.</h2><p className="mt-2 max-w-[48ch] text-[13px] leading-relaxed text-zinc-600">Join the people building a quieter, more private cloud.</p></div><div className="hidden h-10 w-10 place-items-center rounded-full bg-[var(--color-harbour-soft)] text-[var(--color-harbour)] sm:grid"><span className="text-lg">↗</span></div></div><div className="mt-5"><WaitlistForm onSuccess={setSuccess} /></div></> : <div className="flex gap-3"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-emerald-600 text-white">✓</span><div className="min-w-0 flex-1"><h2 className="font-display text-[25px] leading-none tracking-[-0.03em]">You’re on the list.</h2><p className="mt-1 text-[13px] text-zinc-600">Share your link to move up the queue.</p><div className="mt-3 flex flex-col gap-2 sm:flex-row"><div className="min-w-0 flex-1 truncate rounded-[11px] bg-zinc-900 px-3 py-3 font-mono text-[11px] text-white">{referralLink}</div><button onClick={copyReferral} className="h-[44px] rounded-[11px] bg-zinc-900 px-4 text-[13px] font-semibold text-white hover:bg-black">{copied ? 'Copied' : 'Copy link'}</button></div><p className="mt-2 font-mono text-[10px] text-zinc-500">{success.referralCount} referrals · early access priority</p></div></div>}
           </div>
-          <div className="col-span-12 lg:col-span-5 reveal" style={{ transitionDelay: '100ms' } as any}>
-            <div className="rounded-[18px] bg-[var(--color-paper)] text-zinc-900 p-6 sm:p-7 ring-1 ring-black/5">
-              <div className="inline-flex rounded-full bg-[var(--color-harbour)]/15 px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-[var(--color-harbour)]">WHAT NOATUN IS — ONE JOB</div>
-              <h3 className="mt-3 display text-[22px] font-bold tracking-[-0.02em] leading-tight">A curated personal cloud,<br /><span className="font-serif italic font-normal text-zinc-500">not an app store.</span></h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-zinc-600">Drive, photo stream, docs, notes, mail, contacts — one login, one backup story, one compose file. Built for cheap VPS and people who want ownership without Ops theater.</p>
-              <ul className="mt-5 grid gap-2 text-[13px]">
-                {[
-                  'Fits a small VPS — ~0.4 GiB idle, <0.8 GiB light library (measured)',
-                  'Warm paper UI · photo stream, editors, PWA — Nordic, light, tactile',
-                  'Share links for family and clients · quotas, password links',
-                  'Managed option when you don’t want to babysit updates',
-                ].map(t=> (
-                  <li key={t} className="flex gap-2.5 rounded-[12px] bg-white ring-1 ring-zinc-200/70 px-3 py-2.5"><span className="mt-0.5 h-5 w-5 grid place-items-center rounded-full bg-[var(--color-harbour)] text-white text-[11px]">✓</span><span className="leading-snug">{t}</span></li>
-                ))}
-              </ul>
-              <div className="mt-5 flex flex-wrap gap-2">
-                <a href="#waitlist" className="inline-flex h-9 items-center rounded-full bg-zinc-900 px-4 text-[13px] font-semibold text-white hover:bg-black">Join waitlist — free</a>
-                <a href="https://github.com/fifthsegment/noatun" target="_blank" rel="noreferrer" className="inline-flex h-9 items-center rounded-full bg-white ring-1 ring-zinc-200 px-4 text-[13px] font-medium hover:bg-zinc-50">Star on GitHub</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="mx-auto max-w-[1240px] px-4 sm:px-6 pb-4">
-        <div className="reveal rounded-[22px] bg-white/[0.035] ring-1 ring-white/[0.07] overflow-hidden">
-          <div className="grid grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-white/[0.06]">
-            {[
-              { badge:'Self-host', title:'Homelabber', sub:'on a $5–10 VPS', bullets:['One stack instead of Nextcloud + Immich + Filebrowser','1 GB min / 2 GB recommended · Sonic, MinIO, Postgres'] },
-              { badge:'Managed', title:'Family “IT person”', sub:'photos + docs private', bullets:['Photo stream + share links for partner/kids','Managed Noatun if you hate upgrades · backup included'] },
-              { badge:'Pro soon', title:'Freelancer', sub:'share links + quotas', bullets:['Password links, quotas, flat storage vs Google One creep','Docs/notes/mail in one login — fewer tools to bill'] },
-            ].map(c=> (
-              <div key={c.title} className="col-span-12 lg:col-span-4 p-6 sm:p-7">
-                <div className="inline-flex rounded-full bg-white/[0.06] ring-1 ring-white/10 px-2.5 py-1 font-mono text-[10px] font-semibold tracking-[0.12em] text-white/60">{c.badge}</div>
-                <h3 className="mt-3 display text-[18px] font-semibold tracking-tight text-white">{c.title}</h3>
-                <p className="font-mono text-[11px] tracking-wide text-white/40">{c.sub}</p>
-                <ul className="mt-3 space-y-1.5 list-disc list-inside text-[13px] leading-relaxed text-white/65">
-                  {c.bullets.map(b=> <li key={b}>{b}</li>)}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <div className="bg-[var(--color-harbour-soft)] ring-1 ring-[var(--color-harbour-ring)] px-6 py-3 flex flex-wrap items-center gap-2 font-mono text-[11px] text-amber-100/85">
-            <span className="font-semibold tracking-[0.12em]">NOT FOR</span><span className="text-amber-100/60">·</span><span>Photo-only (use Immich) · Enterprise Workspace / Talk+Calendar on 8 GB · Full Hub parity</span>
-          </div>
-        </div>
-      </section>
+        <section id="why" className="mx-auto max-w-[1180px] px-5 py-20 sm:px-7 sm:py-28">
+          <div className="grid grid-cols-12 gap-8 lg:gap-14"><div className="reveal col-span-12 lg:col-span-5"><div className="font-mono text-[10px] font-semibold tracking-[0.16em] text-[var(--color-north)]">A BETTER DEFAULT</div><h2 className="mt-4 font-display text-[clamp(36px,4.5vw,56px)] leading-[0.92] tracking-[-0.05em] text-white">Own the stack.<br /><span className="font-serif italic font-normal text-white/45">Keep the experience.</span></h2><p className="mt-5 max-w-[42ch] text-[15px] leading-[1.7] text-white/55">Self-hosting should not mean accepting a rough interface, stitching together five services, or becoming your own full-time sysadmin.</p></div><div className="col-span-12 grid gap-px overflow-hidden rounded-[20px] bg-white/10 ring-1 ring-white/10 lg:col-span-7">{features.map(feature => <article key={feature.number} className="reveal bg-[var(--color-fjord-deep)] p-6 sm:p-7"><div className="flex gap-5"><span className="font-mono text-[11px] text-[var(--color-harbour)]">{feature.number}</span><div><h3 className="font-display text-[25px] tracking-[-0.03em] text-white">{feature.title}</h3><p className="mt-2 max-w-[44ch] text-[14px] leading-relaxed text-white/50">{feature.description}</p></div></div></article>)}</div></div>
+        </section>
 
-      <section className="mx-auto max-w-[1240px] px-4 sm:px-6 py-8">
-        <div className="grid grid-cols-12 gap-4">
-          {[
-            { k:'01', t:'Self-host', d:'Free AGPL-3.0 core. One compose file — no Helm required.', code:'docker compose -f deploy/compose.yaml up -d --build', cta:{label:'Read the bring-up', href:'https://github.com/fifthsegment/noatun#bring-up-agent-first'} },
-            { k:'02', t:'Managed Noatun', d:'We run it · backups · updates · early price locked.', bullets:['$8–20/mo family · anchored vs €3–15 managed Nextcloud','Invite 3 → queue jump / founding price'], cta:{label:'Join waitlist', href:'#waitlist'}, highlight:true },
-            { k:'03', t:'Pro (later)', d:'White-label / power for MSPs and teams.', bullets:['Domain-bound license · ethical keys later','Not sold before managed economics are clear'], cta:{label:'Pro outline', href:'https://github.com/fifthsegment/noatun#pro-later'}, muted:true },
-          ].map(p=> (
-            <div key={p.k} className={`col-span-12 md:col-span-4 bento rounded-[18px] p-5 ring-1 ${p.highlight? 'bg-[var(--color-paper)] text-zinc-900 ring-black/5 shadow-[0_12px_40px_rgba(12,20,24,0.12)]' : (p as any).muted? 'bg-white/[0.03] ring-white/[0.07] text-white/70' : 'bg-white text-zinc-900 ring-zinc-200'}`}>
-              <div className={`inline-flex h-7 w-7 place-items-center justify-center rounded-full font-mono text-[11px] font-bold ring-1 ${p.highlight? 'bg-zinc-900 text-white ring-zinc-900' : 'bg-zinc-900 text-white ring-zinc-900/10'}`}>{p.k}</div>
-              <h3 className={`mt-3 display text-[18px] font-semibold tracking-tight ${p.highlight? 'text-zinc-900':''}`}>{p.t}</h3>
-              <p className={`mt-1 text-[13px] leading-relaxed ${p.highlight? 'text-zinc-600':'text-zinc-600'}`}>{p.d}</p>
-              {(p as any).code ? <pre className="mt-3 rounded-[10px] bg-zinc-900 text-zinc-100 px-3 py-2.5 font-mono text-[11px] overflow-x-auto">{(p as any).code}</pre> : null}
-              {(p as any).bullets ? <ul className={`mt-3 space-y-1 font-mono text-[11px] leading-relaxed ${p.highlight? 'text-zinc-600':'text-zinc-600'}`}>{(p as any).bullets.map((b:string)=> <li key={b}>· {b}</li>)}</ul> : null}
-              {p.cta && <a href={p.cta.href} className={`mt-4 inline-flex h-9 items-center rounded-full px-4 text-[13px] font-semibold ${p.highlight? 'bg-zinc-900 text-white hover:bg-black':'bg-zinc-900 text-white hover:bg-black'}`}>{p.cta.label} →</a>}
-            </div>
-          ))}
-        </div>
-      </section>
+        <section id="for-you" className="border-y border-white/[0.07] bg-white/[0.025]">
+          <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-7 sm:py-24"><div className="reveal text-center"><div className="font-mono text-[10px] font-semibold tracking-[0.16em] text-[var(--color-north)]">MADE FOR PEOPLE LIKE YOU</div><h2 className="mx-auto mt-4 max-w-[700px] font-display text-[clamp(36px,4.5vw,56px)] leading-[0.92] tracking-[-0.05em] text-white">The stuff you run should<br /><span className="font-serif italic font-normal text-white/45">work beautifully too.</span></h2></div><div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">{audience.map((item, index) => <article key={item.label} className="reveal group rounded-[18px] bg-[var(--color-paper)] p-6 text-zinc-900 ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(0,0,0,0.2)] sm:p-7" style={{ transitionDelay: `${index * 70}ms` } as CSSProperties}><div className="flex items-center justify-between"><span className="font-mono text-[10px] font-semibold tracking-[0.15em] text-[var(--color-harbour)]">{item.label}</span><span className="text-zinc-300 transition group-hover:text-[var(--color-harbour)]">↗</span></div><h3 className="mt-12 font-display text-[27px] leading-none tracking-[-0.04em]">{item.title}</h3><p className="mt-3 text-[14px] leading-relaxed text-zinc-600">{item.body}</p></article>)}</div></div>
+        </section>
 
-      <section id="faq" className="mx-auto max-w-[1240px] px-4 sm:px-6 pb-10">
-        <div className="mx-auto max-w-[760px] reveal">
-          <h3 className="display text-[22px] font-semibold tracking-tight text-center text-white">Questions, answered.</h3>
-          <div className="mt-5"><FAQ /></div>
-        </div>
-      </section>
+        <section className="mx-auto max-w-[1180px] px-5 py-20 sm:px-7 sm:py-28"><div className="grid grid-cols-12 items-center gap-8 lg:gap-14"><div className="reveal col-span-12 lg:col-span-6"><div className="rounded-[20px] bg-[var(--color-paper)] p-2.5 shadow-[0_24px_80px_rgba(0,0,0,0.25)] ring-1 ring-white/10 sm:p-3"><div className="rounded-[14px] bg-zinc-900 p-6 sm:p-8"><div className="flex items-center gap-2 font-mono text-[10px] tracking-[0.14em] text-white/40"><span className="h-2 w-2 rounded-full bg-emerald-400" /> YOUR INFRASTRUCTURE</div><div className="mt-8 grid grid-cols-2 gap-2 sm:gap-3"><div className="rounded-[12px] bg-white/[0.07] p-4 ring-1 ring-white/10"><div className="font-mono text-[10px] text-white/35">LOCATION</div><div className="mt-2 font-display text-[22px] text-white">Your server</div><div className="mt-1 text-[12px] text-white/40">Home lab or VPS</div></div><div className="rounded-[12px] bg-[var(--color-harbour-soft)] p-4 ring-1 ring-[var(--color-harbour-ring)]"><div className="font-mono text-[10px] text-[var(--color-harbour)]">CONTROL</div><div className="mt-2 font-display text-[22px] text-white">Your rules</div><div className="mt-1 text-[12px] text-white/50">Move it whenever you want</div></div><div className="col-span-2 rounded-[12px] bg-white/[0.07] p-4 ring-1 ring-white/10"><div className="flex items-center justify-between"><div><div className="font-mono text-[10px] text-white/35">THE EVERYDAY CLOUD</div><div className="mt-2 font-display text-[24px] text-white">Files · photos · notes · sharing</div></div><div className="hidden h-10 w-10 place-items-center rounded-full bg-white text-zinc-900 sm:grid">→</div></div></div></div></div></div></div><div className="reveal col-span-12 lg:col-span-6"><div className="font-mono text-[10px] font-semibold tracking-[0.16em] text-[var(--color-north)]">THE POINT</div><h2 className="mt-4 font-display text-[clamp(36px,4.5vw,56px)] leading-[0.92] tracking-[-0.05em] text-white">Privacy is not<br /><span className="font-serif italic font-normal text-[var(--color-harbour)]">a compromise.</span></h2><p className="mt-5 max-w-[45ch] text-[15px] leading-[1.7] text-white/55">It is the freedom to know where your data lives, who can access it, and what happens when you decide to move it.</p><a href="#waitlist" className="mt-7 inline-flex h-11 items-center rounded-full bg-white px-5 text-[13px] font-semibold text-zinc-900 transition hover:bg-zinc-100">Get early access →</a></div></div></section>
 
-      <section className="mx-auto max-w-[1240px] px-4 sm:px-6 pb-8">
-        <div className="reveal rounded-[22px] bg-gradient-to-br from-[var(--color-harbour)] via-[#B84E22] to-[var(--color-harbour)] p-[1px]">
-          <div className="rounded-[21px] bg-[var(--color-fjord)] px-6 sm:px-8 py-7 sm:py-8 flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
-            <div>
-              <h3 className="display text-[20px] font-semibold tracking-tight text-white">Get your private cloud — without the second job.</h3>
-              <p className="mt-1 text-[13px] text-white/60">Join the waitlist. Early members lock a founding Managed Noatun rate.</p>
-            </div>
-            <a href="#waitlist" className="inline-flex h-11 shrink-0 items-center justify-center rounded-full bg-white px-6 text-[14px] font-semibold text-zinc-900 hover:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-white">Join waitlist — free</a>
-          </div>
-        </div>
-      </section>
+        <section id="faq" className="mx-auto max-w-[760px] px-5 pb-20 sm:px-7 sm:pb-28"><div className="reveal text-center"><div className="font-mono text-[10px] font-semibold tracking-[0.16em] text-[var(--color-north)]">FAQ</div><h2 className="mt-3 font-display text-[36px] leading-none tracking-[-0.04em] text-white">Good questions.</h2></div><div className="mt-7"><FAQ /></div></section>
+      </main>
 
-      <footer className="border-t border-white/[0.06]">
-        <div className="mx-auto max-w-[1240px] px-4 sm:px-6 py-6 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between font-mono text-[11px] leading-relaxed">
-          <div className="text-white/35">© {new Date().getFullYear()} Noatun · <span className="text-white/55">Private cloud · Self-host or managed</span> · AGPL-3.0 · Not the Rust crate.</div>
-          <div className="flex flex-wrap gap-2">
-            <a href="https://github.com/fifthsegment/noatun" className="rounded-full bg-white/[0.06] ring-1 ring-white/10 px-3 py-1.5 text-white/60 hover:text-white hover:bg-white/10">fifthsegment/noatun</a>
-            <a href="mailto:hello@noatun.app" className="rounded-full bg-white/[0.06] ring-1 ring-white/10 px-3 py-1.5 text-white/60 hover:text-white hover:bg-white/10">hello@noatun.app</a>
-          </div>
-        </div>
-      </footer>
+      <footer className="border-t border-white/[0.08]"><div className="mx-auto flex max-w-[1180px] flex-col gap-4 px-5 py-7 font-mono text-[10px] leading-relaxed text-white/35 sm:flex-row sm:items-center sm:justify-between sm:px-7"><div>© {new Date().getFullYear()} Noatun · Private cloud, your way.</div><div className="flex gap-2"><a href="https://github.com/fifthsegment/noatun" className="rounded-full bg-white/[0.06] px-3 py-1.5 transition hover:bg-white/10 hover:text-white/70">GitHub ↗</a><a href="mailto:hello@noatun.app" className="rounded-full bg-white/[0.06] px-3 py-1.5 transition hover:bg-white/10 hover:text-white/70">hello@noatun.app</a></div></div></footer>
     </div>
   )
 }
