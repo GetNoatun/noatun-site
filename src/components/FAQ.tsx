@@ -1,9 +1,9 @@
 const faqs = [
-  { q: 'Where does Noatun run?', a: 'On your hardware or a VPS you control. It is designed for the home lab and for small, practical deployments — not a cloud bill that grows with every feature.' },
-  { q: 'What can I keep in it?', a: 'Your everyday essentials: files, photos, notes, and shareable links. Noatun focuses on making those things feel like one coherent product.' },
-  { q: 'Do I need to be a Linux expert?', a: 'Noatun is built for people comfortable running their own infrastructure, but the experience should still feel approachable once it is running. The goal is less maintenance, not more.' },
-  { q: 'Can I choose managed hosting?', a: 'Yes. Self-hosting is the foundation; a managed option is planned for people who want the same product without maintaining the server.' },
-  { q: 'How do I get early access?', a: 'Join the waitlist above. We will share launch news, early access, and founding pricing with the people who sign up.' },
+  { q: 'Why not just use Google Drive?', a: 'Because convenience and control should not be mutually exclusive. Noatun gives you a focused place for files, photos, documents, and sharing — while the infrastructure stays yours.' },
+  { q: 'Why not Nextcloud?', a: 'Nextcloud is broad and powerful. Noatun is deliberately more focused: a lighter daily cloud for people who want less plugin sprawl, less maintenance anxiety, and a cleaner product experience.' },
+  { q: 'Can we run it ourselves?', a: 'Yes. Self-hosting is the foundation: run Noatun in your home lab, on a VPS, or inside the environment your team already trusts. A managed path is planned for teams that want the product without operating the server.' },
+  { q: 'Is it useful for a small team?', a: 'That is where the product is headed: shared files and documents for the team, plus the operational basics an owner or IT lead needs — users, quotas, roles, backups, and logs.' },
+  { q: 'What do I get by joining the waitlist?', a: 'Launch updates, early access, and founding pricing. You also help shape the product by telling us what is frustrating about your current setup.' },
 ]
 
 export default function FAQ() {
