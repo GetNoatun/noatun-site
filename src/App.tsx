@@ -67,7 +67,7 @@ export default function App() {
     <header className="site-header">
       <div className="site-container header-inner">
         <a className="brand" href="#top" aria-label="Noatun home"><BrandMark theme={theme} /><span>Noatun</span></a>
-        <nav className="desktop-nav" aria-label="Main navigation"><a href="#product">Product</a><a href="/noatun-site/enterprise/">For teams</a><a href="#faq">FAQ</a></nav>
+        <nav className="desktop-nav" aria-label="Main navigation"><a href="#product">Product</a><a href="/noatun-site/enterprise/">For enterprise ↗</a><a href="#faq">FAQ</a></nav>
         <div className="header-actions">
           <button className="theme-toggle" type="button" onClick={() => setTheme(value => value === 'dark' ? 'light' : 'dark')} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}><span aria-hidden>{theme === 'dark' ? '☼' : '◐'}</span><span className="theme-toggle-label">{theme === 'dark' ? 'Light' : 'Dark'}</span></button>
           <a className="header-link" href="https://github.com/GetNoatun/noatun-site" target="_blank" rel="noreferrer">GitHub ↗</a>
@@ -75,14 +75,14 @@ export default function App() {
           <button className="menu-button" type="button" aria-label="Open menu" aria-expanded={mobileNav} onClick={() => setMobileNav(value => !value)}>{mobileNav ? '×' : '≡'}</button>
         </div>
       </div>
-      {mobileNav && <nav className="mobile-nav"><a href="#product" onClick={() => setMobileNav(false)}>Product</a><a href="/noatun-site/enterprise/" onClick={() => setMobileNav(false)}>For teams</a><a href="#faq" onClick={() => setMobileNav(false)}>FAQ</a><a className="button button-dark" href="#waitlist" onClick={() => setMobileNav(false)}>Get early access</a></nav>}
+      {mobileNav && <nav className="mobile-nav"><a href="#product" onClick={() => setMobileNav(false)}>Product</a><a href="/noatun-site/enterprise/" onClick={() => setMobileNav(false)}>For enterprise ↗</a><a href="#faq" onClick={() => setMobileNav(false)}>FAQ</a><a className="button button-dark" href="#waitlist" onClick={() => setMobileNav(false)}>Get early access</a></nav>}
     </header>
 
     <main id="top">
       <section className="hero-section">
         <div className="hero-grid" aria-hidden="true" /><div className="hero-glow" aria-hidden="true" />
         <div className="site-container hero-inner">
-          <div className="hero-copy reveal"><div className="eyebrow eyebrow-accent"><span className="status-dot" />PERSONAL CLOUD / SMALL TEAMS</div><h1>Your own Drive<br /><span>and Photos.</span></h1><p className="hero-lede">Noatun gives self-hosters a private daily cloud for files, photos, documents, search, and sharing — without turning the server into a second job.</p><div className="hero-buttons"><a className="button button-accent" href="#waitlist">Get early access <span>→</span></a><a className="button button-quiet" href="#product">See the product</a></div><div className="hero-meta"><span>Self-hosted first</span><span>1 GB minimum</span><span>Built for small teams</span></div></div>
+          <div className="hero-copy reveal"><div className="eyebrow eyebrow-accent"><span className="status-dot" />PERSONAL CLOUD / SMALL TEAMS</div><h1>Your own Drive<br /><span>and Photos.</span></h1><p className="hero-lede">Noatun gives self-hosters a private daily cloud for files, photos, documents, search, and sharing — without turning the server into a second job.</p><div className="hero-buttons"><a className="button button-accent" href="#waitlist">Get early access <span>→</span></a><a className="button button-quiet" href="#product">See the product</a><a className="button button-quiet" href="/noatun-site/enterprise/">For enterprise <span>↗</span></a></div><div className="hero-meta"><span>Self-hosted first</span><span>1 GB minimum</span><span>Built for small teams</span></div></div>
           <div className="hero-image reveal" style={{ transitionDelay: '100ms' } as CSSProperties}><div className="image-label"><span>REAL PRODUCT</span><span>NOATUN / PHOTOS</span></div><ProductWindow label="PHOTOS" className="hero-product-window"><div className="hero-shot"><img src={asset('04-photos.png')} alt="Noatun Photos interface showing a private photo library" /></div></ProductWindow><div className="image-caption">The interface is real. The infrastructure is yours.</div></div>
         </div>
       </section>
