@@ -1,32 +1,32 @@
-# noatun-site — noatun.app
+# Noatun website
 
-Waitlist + marketing site for **Noatun personal cloud** — hosted on **Cloudflare Pages**.
+Marketing and early-access site for [Noatun](https://noatun.app).
 
-- Stack: Vite + React + Tailwind v4 + TypeScript + Cloudflare Pages Functions
-- Domain: `noatun.app` (HSTS) on Cloudflare
-- Repo: `GetNoatun/noatun-site`
+- Stack: Vite, React, Tailwind CSS, and TypeScript
+- Hosting: GitHub Pages from `GetNoatun/noatun-site`
+- Production domain: `noatun.app`
+- Deployment path: `/`
 
-## Local dev
+## Local development
 
 ```bash
 npm ci
 npm run dev          # http://localhost:5173
-npm run build        # -> dist/
+npm run build        # outputs dist/
 npm run preview
 ```
 
-## Cloudflare Pages — deploy
+## Deployment
 
-**Connect Git:** Dash → Pages → Create → Connect `GetNoatun/noatun-site` → Build `npm run build` → Output `dist`.
+A push to `main` builds and deploys `dist/` through `.github/workflows/pages.yml`.
+`public/CNAME` configures GitHub Pages to serve the repository at `https://noatun.app/`.
 
-**KV for waitlist:** Dash → Workers & Pages → KV → Create namespace `WAITLIST` → Pages → Settings → Functions → KV bindings → `WAITLIST` → `WAITLIST`.
+In Cloudflare DNS, point the production hostname to GitHub Pages:
 
-`POST /api/waitlist` stores `{email, current, interest, source}` → `{referralCode, referralUrl}`. `?ref=CODE` increments referrer. Demo mode works before KV is bound.
+| Type | Name | Target |
+| --- | --- | --- |
+| CNAME | `@` | `getnoatun.github.io` |
 
-## Design
+Cloudflare flattens the apex CNAME. Keep the record DNS-only until GitHub has issued the TLS certificate; proxying can be enabled afterward if desired.
 
-Harbor-dark canvas (`#09090b` zinc-950) + amber beacon (`#f59e0b`), borders-only elevation, 4px rhythm, Inter + JetBrains Mono. See `.interface-design` parity with `fifthsegment/noatun`.
-
-## Serial
-
-`fifthsegment/clouddrive#23` Waitlist + referral landing. Copy from `docs/marketing-ideas.md` — hero `Private Google that fits a $5 VPS`.
+The GitHub Pages deployment cannot execute `functions/api/waitlist.ts`, so forms use the prepared-email fallback. Deploy to a backend-enabled host to restore persistent waitlist submissions.

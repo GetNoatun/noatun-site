@@ -7,7 +7,7 @@ const enterprise = homepage
   .replace('content="Noatun is a self-hosted private cloud for files, photos, documents, search, and sharing — all on infrastructure you control."', 'content="Noatun gives small teams a private file workspace with identity, quotas, sharing, monitoring, and backups on infrastructure they control."')
   .replace('content="Noatun — Your own Drive and Photos"', 'content="Noatun for Teams — Private file workspace"')
   .replace('content="A self-hosted private cloud for files, photos, documents, search, and sharing."', 'content="A focused private file workspace for small teams, with visible administration and self-hosted deployment."')
-  .replaceAll('https://getnoatun.github.io/noatun-site/"', 'https://getnoatun.github.io/noatun-site/enterprise/"')
+  .replaceAll('https://noatun.app/"', 'https://noatun.app/enterprise/"')
 
 await mkdir(new URL('../dist/enterprise/', import.meta.url), { recursive: true })
 await writeFile(new URL('../dist/404.html', import.meta.url), homepage)

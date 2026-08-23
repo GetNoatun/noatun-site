@@ -20,7 +20,7 @@ const capabilities = [
 ]
 
 function asset(name: string) {
-  return `/noatun-site/screenshots/${name}`
+  return `/screenshots/${name}`
 }
 
 function useTheme(): [Theme, Dispatch<SetStateAction<Theme>>] {
@@ -31,7 +31,7 @@ function useTheme(): [Theme, Dispatch<SetStateAction<Theme>>] {
   useEffect(() => {
     document.documentElement.dataset.theme = theme
     localStorage.setItem('noatun-theme-v2', theme)
-    document.querySelector<HTMLLinkElement>('link[rel="icon"]')?.setAttribute('href', `/noatun-site/noatun-icon${theme === 'light' ? '-light' : ''}.png`)
+    document.querySelector<HTMLLinkElement>('link[rel="icon"]')?.setAttribute('href', `/noatun-icon${theme === 'light' ? '-light' : ''}.png`)
   }, [theme])
   return [theme, setTheme]
 }
@@ -54,11 +54,11 @@ export default function EnterprisePage() {
   return <div className="site-shell enterprise-page">
     <header className="site-header">
       <div className="site-container header-inner">
-        <a className="brand" href="/noatun-site/" aria-label="Noatun home"><BrandMark theme={theme} /><span>Noatun</span></a>
+        <a className="brand" href="/" aria-label="Noatun home"><BrandMark theme={theme} /><span>Noatun</span></a>
         <nav className="desktop-nav" aria-label="Main navigation"><a href="#capabilities">Admin controls</a><a href="#deployment">Deployment</a><a href="#faq">FAQ</a></nav>
         <div className="header-actions">
           <button className="theme-toggle" type="button" onClick={() => setTheme(value => value === 'dark' ? 'light' : 'dark')} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}><span aria-hidden>{theme === 'dark' ? '☼' : '◐'}</span><span className="theme-toggle-label">{theme === 'dark' ? 'Light' : 'Dark'}</span></button>
-          <a className="header-link" href="/noatun-site/">For personal use</a>
+          <a className="header-link" href="/">For personal use</a>
           <a className="button button-small button-dark" href="#contact">Request team access</a>
         </div>
       </div>
@@ -88,6 +88,6 @@ export default function EnterprisePage() {
       <section id="contact" className="enterprise-contact"><div className="site-container"><div className="enterprise-contact-card"><Reveal className="enterprise-contact-intro"><div className="eyebrow eyebrow-accent">TEAM EARLY ACCESS</div><h2>Tell us about your deployment.</h2><p>Share your current workspace, team size, and operating requirements. We are working with early teams that value control and can help shape the product.</p></Reveal>{!success ? <TeamWaitlistForm onSuccess={setSuccess} /> : <div className="success-state"><span className="success-icon">✓</span><div><h3>Request received.</h3><p>Thanks, {success.email}. We will use the details you provided to follow up about team early access.</p></div></div>}</div></div></section>
     </main>
 
-    <footer className="site-footer"><div className="site-container footer-inner"><div>© {new Date().getFullYear()} Noatun · Private file workspace for small teams.</div><div className="footer-links"><a href="/noatun-site/">For personal use</a><a href="mailto:hello@noatun.app">hello@noatun.app</a></div></div></footer>
+    <footer className="site-footer"><div className="site-container footer-inner"><div>© {new Date().getFullYear()} Noatun · Private file workspace for small teams.</div><div className="footer-links"><a href="/">For personal use</a><a href="mailto:hello@noatun.app">hello@noatun.app</a></div></div></footer>
   </div>
 }
